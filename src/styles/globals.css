@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Baloo";
+  src: url("/fonts/baloo-regular.woff2");
+}
+
+@font-face {
+  font-family: "BalooTamma";
+  src: url("/fonts/baloo-tamma.woff2");
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 150 70% 25%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 150 30% 95%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 150 30% 95%;
+    --muted-foreground: 150 20% 40%;
+    --accent: 150 30% 95%;
+    --accent-foreground: 150 70% 25%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 150 30% 85%;
+    --input: 150 30% 85%;
+    --ring: 150 70% 25%;
+
+    --emeraldPrimary: #0a7a55;
+    --sageAccent: #a8c5a0;
+    --deepEmerald: #054d3a;
+    --softSage: #d8f3dc;
+    --darkCharcoal: #2d2d2d;
+    --emeraldGradientFrom: #0a7a55;
+    --emeraldGradientTo: #054d3a;
+    --whiteGradientFrom: #ffffff;
+    --whiteGradientTo: #f8fbfa;
+    --primaryEmerald: #0a7a55;
+    --secondaryEmerald: #054d3a;
+    --sageText: #a8c5a0;
+    --navbarText: #054d3a;
+    --navbarHover: #0a7a55;
+    --buttonBackground: #0a7a55;
+    --buttonText: #ffffff;
+    --locationText: #2d2d2d;
+    --emeraldButtonBorder: #a8c5a0;
+    --secondaryButtonBorder: #d8f3dc;
+    --appointmentButtonBorder: #a8c5a0;
+    --contactButtonBorder: #d8f3dc;
+    --contactButtonBackground: #d8f3dc;
+    --offWhiteText: #f8fbfa;
+    --lightSectionText: #0a7a55;
+    --darkSectionText: #d8f3dc;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear,
+  input[type="password"]::-webkit-password-toggle-button {
+    display: none !important;
+  }
+}
+
+@layer components {
+  .zoom-image [data-rmiz-modal-overlay="visible"] {
+    @apply bg-background/10 backdrop-blur;
+  }
+
+  .zoom-image [data-rmiz-modal-img] {
+    @apply rounded-md lg:rounded-2xl;
+  }
+
+  .location-pill {
+    background: linear-gradient(85.38deg, #f5f5f5 10.45%, var(--softSage) 128.37%);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+}
