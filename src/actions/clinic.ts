@@ -40,13 +40,13 @@ export async function addClinic(
       })
       .returning()
 
-    revalidatePath("/admin/przychodnia")
+    revalidatePath("/admin/clinic")
     revalidatePath("/")
 
     return newClinic ? "success" : "error"
   } catch (error) {
     console.error(error)
-    throw new Error("Błąd przy dodawaniu nowej kliniki")
+    throw new Error("Error adding new clinic")
   }
 }
 
@@ -55,39 +55,39 @@ export async function getClinic(): Promise<Clinic | null> {
     noStore()
     let [clinic] = await psGetClinic.execute()
 
-    if (!clinic) {
-      const newClinic = await db
-        .insert(clinics)
-        .values({
-          id: generateId(),
-          latitude: "49.963502626301796",
-          longitude: "20.41957162751482",
-          address: "Brodzińskiego 2, 32-700 Bochnia",
-          phone_1: "14 61 16 499",
-          phone_2: "501 01 45 54",
-          email: "pjborowiecki@poutlook.com",
-        })
-        .returning()
+      if (!clinic) {
+        const newClinic = await db
+          .insert(clinics)
+          .values({
+            id: generateId(),
+            latitude: "-1.2634",
+            longitude: "36.8089",
+            address: "Dahlia Wellness Centre, Clarence House, 8 School Lane, Westlands, Nairobi, Kenya",
+            phone_1: "+254 726 017 063",
+            phone_2: "+254 117 889 911",
+            email: "info@brianoduorphysiotherapy.com",
+          })
+          .returning()
 
-      if (newClinic) {
-        ;[clinic] = await psGetClinic.execute()
+        if (newClinic) {
+          ;[clinic] = await psGetClinic.execute()
+        }
       }
-    }
 
-    return clinic || null
+      return clinic || null
   } catch (error) {
     console.error(error)
-    return {
-      id: "default-clinic-id",
-      latitude: "-1.2864",
-      longitude: "36.8172",
-      address: "Dahlia Wellness Centre, 8 School Lane, Westlands, Nairobi, Kenya",
-      phone_1: "+254 726 017 063",
-      phone_2: "+254 117 889 911",
-      email: "info@brianoduorphysiotherapy.com",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
+      return {
+        id: "default-clinic-id",
+        latitude: "-1.2634",
+        longitude: "36.8089",
+        address: "Dahlia Wellness Centre, Clarence House, 8 School Lane, Westlands, Nairobi, Kenya",
+        phone_1: "+254 726 017 063",
+        phone_2: "+254 117 889 911",
+        email: "info@brianoduorphysiotherapy.com",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
   }
 }
 
@@ -134,12 +134,12 @@ export async function updateClinic(
       .where(eq(clinics.id, validatedInput.data.id))
       .returning()
 
-    revalidatePath("/admin/przychodnia")
+    revalidatePath("/admin/clinic")
     revalidatePath("/")
 
     return clinicUpdated ? "success" : "error"
   } catch (error) {
     console.error(error)
-    throw new Error("Błąd przy aktualizacji danych przychodni")
+    throw new Error("Error updating clinic details")
   }
 }

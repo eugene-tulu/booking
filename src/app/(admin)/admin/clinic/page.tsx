@@ -16,8 +16,8 @@ import { Shell } from "@/components/shells/shell"
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
-  title: "Clinic",
-  description: "Manage clinic data",
+  title: "Practice Details",
+  description: "Manage practice location and contact information",
 }
 
 export default async function ClinicPage(): Promise<JSX.Element> {

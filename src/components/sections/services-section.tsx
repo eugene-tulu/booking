@@ -14,12 +14,12 @@ export function ServicesSection(): JSX.Element {
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center px-5 md:px-6 lg:px-7">
         <div className="mt-12 flex flex-col md:mt-[-64px] md:grid md:grid-cols-2 lg:mt-[-96px]">
           <div className="flex flex-col items-center justify-center gap-8 md:gap-6">
-            <h2 className="w-[90%] bg-gradient-to-br from-whiteGradientFrom to-whiteGradientTo bg-clip-text text-center font-[BalooTamma] font-bold leading-[1.05] text-transparent md:text-start">
-              <span className="whitespace-nowrap text-[12vw] md:text-[5.8vw] w-1400:text-[80px]">
+            <h2 className="w-[90%] bg-gradient-to-br from-emeraldGradientFrom to-emeraldGradientTo bg-clip-text text-center font-[BalooTamma] font-bold leading-[1.05] text-transparent md:text-start">
+              <span className="whitespace-nowrap text-[clamp(36px,12vw,80px)] md:text-[5.8vw] w-1400:text-[80px]">
                 Physiotherapy &
               </span>
               <br />
-              <span className="text-[7.6vw] md:whitespace-nowrap md:text-[3.71vw] w-1400:text-[51.2px]">
+              <span className="text-[clamp(28px,7.6vw,51px)] md:whitespace-nowrap md:text-[3.71vw] w-1400:text-[51.2px]">
                 Rehabilitation Services
               </span>
             </h2>
@@ -27,7 +27,7 @@ export function ServicesSection(): JSX.Element {
             {servicesSectionParagraphs?.map((paragraph, index) => (
               <p
                 key={index}
-                className="w-[86%] text-center text-[4.8vw] leading-[150%] text-darkSectionText opacity-60 md:w-[90%] md:pr-[14.5%] md:text-start md:text-[1.7vw] xl:pr-[16%] w-1400:pr-[23%] w-1400:text-[22px]"
+                 className="w-[86%] text-center text-[clamp(18px,4.8vw,22px)] leading-[150%] text-darkSectionText opacity-60 md:w-[90%] md:pr-[14.5%] md:text-start md:text-[1.7vw] xl:pr-[16%] w-1400:pr-[23%] w-1400:text-[22px]"
               >
                 <Balancer>{paragraph.content}</Balancer>
               </p>
@@ -35,11 +35,14 @@ export function ServicesSection(): JSX.Element {
           </div>
 
           <div className="flex items-center justify-center">
-            <img
-              src="/images/services-image.png"
-              className="mb-8 ml-[9%] mt-4 size-full scale-[1.35] object-contain md:mb-0 md:ml-0 md:scale-125 2xl:scale-[1.35]"
-              alt="Physiotherapy session with patient"
-            />
+            <div
+              className="mb-8 ml-[9%] mt-4 size-full rounded-3xl bg-softSage md:mb-0 md:ml-0 md:scale-125 2xl:scale-[1.35]"
+              style={{ minHeight: '320px', maxHeight: '480px', maxWidth: '480px' }}
+            >
+              <span className="flex h-full w-full items-center justify-center text-lg text-muted-foreground">
+                Physiotherapy services illustration
+              </span>
+            </div>
           </div>
         </div>
 

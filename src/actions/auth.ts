@@ -28,9 +28,6 @@ import {
 
 import { generateId } from "@/lib/utils"
 
-import { EmailVerificationEmail } from "@/components/emails/auth/email-verification-email"
-import { ResetPasswordEmail } from "@/components/emails/auth/reset-password-email"
-
 export async function signUpWithPassword(
   rawInput: SignUpWithPasswordFormInput
 ): Promise<"invalid-input" | "exists" | "success" | "error"> {
@@ -53,6 +50,10 @@ export async function signUpWithPassword(
         emailVerificationToken,
       })
       .returning()
+
+    const { EmailVerificationEmail } = await import(
+      "@/components/emails/auth/email-verification-email"
+    )
 
     const emailSent = await resend.emails.send({
       from: process.env.RESEND_EMAIL_FROM,
@@ -137,6 +138,10 @@ export async function resetPassword(
       })
       .where(eq(users.email, validatedInput.data.email))
       .returning()
+
+    const { ResetPasswordEmail } = await import(
+      "@/components/emails/auth/reset-password-email"
+    )
 
     const emailSent = await resend.emails.send({
       from: process.env.RESEND_EMAIL_FROM,

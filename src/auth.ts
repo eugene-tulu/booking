@@ -1,28 +1,27 @@
-import { linkOAuthAccount } from "@/actions/auth"
+import { linkOAuthAccount } from "@/actions/oauth"
 import { getUserById } from "@/actions/user"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import NextAuth from "next-auth"
+import type { NextAuthConfig } from "next-auth"
 
 import authConfig from "@/config/auth"
 import { db } from "@/config/db"
 
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-} = NextAuth({
+const sessionConfig = {
+  strategy: "jwt" as const,
+  maxAge: 30 * 24 * 60 * 60,
+  updateAge: 24 * 60 * 60,
+}
+
+const config: NextAuthConfig = {
+  ...authConfig,
   debug: process.env.NODE_ENV === "development",
   pages: {
-    signIn: "/logowanie",
+    signIn: "/login",
     signOut: "/signout",
   },
   secret: process.env.AUTH_SECRET,
-  session: {
-    strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // 24 hours
-  },
+  session: sessionConfig,
   events: {
     async linkAccount({ user }) {
       if (user.id) await linkOAuthAccount({ userId: user.id })
@@ -47,5 +46,11 @@ export const {
     },
   },
   adapter: DrizzleAdapter(db),
-  ...authConfig,
-})
+}
+
+export const {
+  handlers: { GET, POST },
+  auth,
+  signIn,
+  signOut,
+} = NextAuth(config)

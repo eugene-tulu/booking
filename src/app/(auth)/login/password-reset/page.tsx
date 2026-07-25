@@ -31,7 +31,7 @@ export default function PasswordReset(): JSX.Element {
           <PasswordResetForm />
           <Link
             aria-label="Back to sign in page"
-            href="/logowanie"
+            href="/login"
             className={buttonVariants({ variant: "outline" })}
           >
             Cancel

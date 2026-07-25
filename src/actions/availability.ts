@@ -184,7 +184,7 @@ export async function getDatesUnavailable(): Promise<DateUnavailable[] | null> {
     const datesUnavailable = await psGetDatesUnavailable.execute()
     return datesUnavailable ?? null
   } catch (error) {
-    console.error()
+    console.error(error)
     return null
   }
 }
@@ -200,7 +200,7 @@ export async function getDatesUnavailableAsAnArrayOfDates(): Promise<Date[]> {
 
     return datesUnavailable ?? []
   } catch (error) {
-    console.error()
+    console.error(error)
     return []
   }
 }

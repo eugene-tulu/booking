@@ -2,6 +2,7 @@
 
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
 import { desc, eq, like, or } from "drizzle-orm"
+import { z } from "zod"
 
 import { db } from "@/config/db"
 import {
@@ -24,6 +25,13 @@ import {
 } from "@/validations/booking"
 
 import { generateId } from "@/lib/utils"
+
+const updateBookingStatusSchema = z.object({
+  id: z.string().min(1, "ID is required"),
+  status: z.enum(bookings.status.enumValues),
+})
+
+type UpdateBookingStatusInput = z.infer<typeof updateBookingStatusSchema>
 
 export async function getAllBookings(): Promise<Booking[] | null> {
   try {
@@ -57,17 +65,17 @@ export async function addBooking(
         email: validatedInput.data.email,
         phone: validatedInput.data.phone,
         message: validatedInput.data.message,
-        status: validatedInput.data.status,
+        status: "unconfirmed",
       })
       .returning()
 
     revalidatePath("/")
-    revalidatePath(`/rezerwacja`)
+    revalidatePath(`/booking`)
 
     return newBooking ? "success" : "error"
   } catch (error) {
     console.error(error)
-    throw new Error("Błąd przy dodawaniu rezerwacji")
+    throw new Error("Error adding booking")
   }
 }
 
@@ -86,7 +94,7 @@ export async function checkIfBookingExists(
     return exists ? true : false
   } catch (error) {
     console.error(error)
-    throw new Error("Błąd przy sprawdzaniu rezerwacji")
+    throw new Error("Error checking booking existence")
   }
 }
 
@@ -112,17 +120,20 @@ export async function updateBooking(
         email: validatedInput.data.email,
         phone: validatedInput.data.phone,
         message: validatedInput.data.message,
-        status: validatedInput.data.status,
+        ...(validatedInput.data.status
+          ? { status: validatedInput.data.status }
+          : {}),
       })
       .where(eq(bookings.id, validatedInput.data.id))
       .returning()
 
     // TODO: Update revalidation path
     revalidatePath("/")
+    revalidatePath("/admin/bookings")
     return updatedBooking ? "success" : "error"
   } catch (error) {
     console.error(error)
-    throw new Error("Błąd przy edytowaniu rezerwacji")
+    throw new Error("Error updating booking")
   }
 }
 
@@ -139,10 +150,40 @@ export async function deleteBooking(
 
     // TODO: Update path to be revalidated
     // revalidatePath("")
+    revalidatePath("/admin/bookings")
     return deleted ? "success" : "error"
   } catch (error) {
     console.error(error)
-    throw new Error("Błąd przy usuwaniu rezerwacji")
+    throw new Error("Error deleting booking")
+  }
+}
+
+export async function updateBookingStatus(
+  rawInput: UpdateBookingStatusInput
+): Promise<"invalid-input" | "not-found" | "error" | "success"> {
+  try {
+    const validatedInput = updateBookingStatusSchema.safeParse(rawInput)
+    if (!validatedInput.success) return "invalid-input"
+
+    const exists = await checkIfBookingExists({ id: validatedInput.data.id })
+    if (!exists || exists === "invalid-input") return "not-found"
+
+    noStore()
+    const updatedBooking = await db
+      .update(bookings)
+      .set({
+        status: validatedInput.data.status,
+      })
+      .where(eq(bookings.id, validatedInput.data.id))
+      .returning()
+
+    revalidatePath("/")
+    revalidatePath("/admin/bookings")
+
+    return updatedBooking ? "success" : "error"
+  } catch (error) {
+    console.error(error)
+    throw new Error("Error updating booking status")
   }
 }
 
@@ -175,6 +216,6 @@ export async function filterBookings(rawInput: FilterBookingsInput) {
     return bookingsByType
   } catch (error) {
     console.error(error)
-    throw new Error("Błąd przy filtrowaniu rezerwacji")
+    throw new Error("Error filtering bookings")
   }
 }

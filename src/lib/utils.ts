@@ -17,6 +17,7 @@ export function formatTime(date: Date | string) {
 }
 
 export function isMacOs(): boolean {
+  if (typeof window === "undefined") return false
   return window.navigator.userAgent.includes("Mac")
 }
 
@@ -70,4 +71,3 @@ export function absoluteUrl(path: string): string {
   return `${process.env.NEXT_PUBLIC_APP_URL}${path}`
 }
 
-export function handleClickSecondaryButton() {}

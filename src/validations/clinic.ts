@@ -78,8 +78,8 @@ export const clinicSchema = z.object({
 
 export const getClinicByIdSchema = z.object({
   id: z.string({
-    required_error: "Id jest wymagane",
-    invalid_type_error: "Id musi być tekstem",
+    required_error: "ID is required",
+    invalid_type_error: "ID must be text",
   }),
 })
 

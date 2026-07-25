@@ -48,37 +48,37 @@ export function EmailVerificationForm(): JSX.Element {
         switch (message) {
           case "not-found":
             toast({
-              title: "Użytkownik z podanym adresem email nie istnieje",
+              title: "No account found with this email address",
               variant: "destructive",
             })
             form.reset()
             break
           case "verified":
             toast({
-              title: "Twój email jest już zweryfikowany",
-              description: "Wróć do strony logowania i spróbuj się zalogować",
+              title: "Your email is already verified",
+              description: "Return to the sign in page and try logging in",
             })
             break
           case "success":
             toast({
-              title: "Link weryfikacyjny został wysłany",
+              title: "Verification link sent",
               description:
-                "Kliknij w otrzymanego linka w celu dokończenia weryfikacji",
+                "Click the link in your email to complete verification",
             })
             router.push(DEFAULT_UNAUTHENTICATED_REDIRECT)
             break
           default:
             toast({
-              title: "Błąd przy wysyłaniu linka weryfikacyjnego",
-              description: "Spróbuj ponownie",
+              title: "Error sending verification link",
+              description: "Please try again",
               variant: "destructive",
             })
-            router.push("/rejestracja")
+            router.push("/register")
         }
       } catch (error) {
         toast({
-          title: "Coś poszło nie tak",
-          description: "Spróbuj ponownie",
+          title: "Something went wrong",
+          description: "Please try again",
           variant: "destructive",
         })
         console.error(error)
@@ -99,7 +99,7 @@ export function EmailVerificationForm(): JSX.Element {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="jankowalski@gmail.com" {...field} />
+                <Input placeholder="johndoe@gmail.com" {...field} />
               </FormControl>
               <FormMessage className="pt-2 sm:text-sm" />
             </FormItem>
@@ -108,18 +108,18 @@ export function EmailVerificationForm(): JSX.Element {
 
         <Button disabled={isPending}>
           {isPending ? (
-            <>
-              <Icons.spinner
-                className="mr-2 size-4 animate-spin"
-                aria-hidden="true"
-              />
-              <span>Wysyłanie...</span>
-            </>
+              <>
+                <Icons.spinner
+                  className="mr-2 size-4 animate-spin"
+                  aria-hidden="true"
+                />
+                <span>Sending...</span>
+              </>
           ) : (
-            <span>Wyślij link</span>
+            <span>Send verification link</span>
           )}
           <span className="sr-only">
-            Prześlij link weryfikacyjny na podany adres email
+            Send verification link to provided email address
           </span>
         </Button>
       </form>

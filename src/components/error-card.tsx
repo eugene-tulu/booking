@@ -28,7 +28,7 @@ export function ErrorCard({
   title,
   description,
   retryLink,
-  retryLinkText = "Spróbuj ponownie",
+  retryLinkText = "Try again",
   reset,
   className,
   ...props
@@ -71,8 +71,8 @@ export function ErrorCard({
       ) : null}
       {reset ? (
         <CardFooter>
-          <Button aria-label="Spróbuj ponownie" variant="ghost" onClick={reset}>
-            Spróbuj ponownie
+          <Button aria-label="Try again" variant="ghost" onClick={reset}>
+            Try again
           </Button>
         </CardFooter>
       ) : null}

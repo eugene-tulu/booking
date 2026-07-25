@@ -49,7 +49,7 @@ Go back to the sign up page and select &quot;resend&quot; to get a new link
             <CardContent>
               <Link
                 aria-label="Go back to sign in page"
-                href="/rejestracja"
+                href="/register"
                 className={cn(
                   buttonVariants({ variant: "secondary" }),
                   "w-full"
@@ -68,7 +68,7 @@ Go back to the sign up page and select &quot;resend&quot; to get a new link
     const message = await markEmailAsVerified({
       token: emailVerificationToken,
     })
-    if (message !== "success") redirect("/rejestracja")
+    if (message !== "success") redirect("/register")
 
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
@@ -82,7 +82,7 @@ Go back to the sign up page and select &quot;resend&quot; to get a new link
           <CardContent>
             <Link
               aria-label="Go to sign in page"
-              href="/logowanie"
+              href="/login"
               className={buttonVariants({ className: "w-full" })}
             >
               <span className="sr-only">Go to sign in page</span>
@@ -106,7 +106,7 @@ Go back to the sign up page and select &quot;resend&quot; to get a new link
         <CardContent>
           <Link
             aria-label="Go back to sign up page"
-            href="/rejestracja"
+            href="/register"
             className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
           >
             <Icons.arrowLeft className="mr-2 size-4" />

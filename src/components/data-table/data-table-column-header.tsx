@@ -39,10 +39,10 @@ export function DataTableColumnHeader<TData, TValue>({
           <Button
             aria-label={
               column.getIsSorted() === "desc"
-                ? `Sortowanie malejące. Kliknij by sortować rosnąco`
+                ? `Sorted descending. Click to sort ascending`
                 : column.getIsSorted() === "asc"
-                  ? `Sortowanie rosnące. Kliknij by sortować malejąco`
-                  : `Brak sortowania. Kliknij by sortować rosnąco`
+                  ? `Sorted ascending. Click to sort descending`
+                  : `Not sorted. Click to sort ascending`
             }
             variant="ghost"
             size="sm"
@@ -60,24 +60,24 @@ export function DataTableColumnHeader<TData, TValue>({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem
-            aria-label="Sortowanie rosnące"
+            aria-label="Sort ascending"
             onClick={() => column.toggleSorting(false)}
           >
             <ArrowUpIcon
               className="mr-2 size-3.5 text-muted-foreground/70"
               aria-hidden="true"
             />
-            Rosnąco
+            Ascending
           </DropdownMenuItem>
           <DropdownMenuItem
-            aria-label="Sortowanie malejące"
+            aria-label="Sort descending"
             onClick={() => column.toggleSorting(true)}
           >
             <ArrowDownIcon
               className="mr-2 size-3.5 text-muted-foreground/70"
               aria-hidden="true"
             />
-            Malejąco
+            Descending
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -88,7 +88,7 @@ export function DataTableColumnHeader<TData, TValue>({
               className="mr-2 size-3.5 text-muted-foreground/70"
               aria-hidden="true"
             />
-            Ukryj
+            Hide
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

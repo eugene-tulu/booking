@@ -7,6 +7,7 @@ import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/config/defaults"
 import { bookings, type Booking } from "@/db/schema"
 
 import auth from "@/lib/auth"
+import { updateBookingStatus } from "@/actions/booking"
 
 import {
   Card,
@@ -108,10 +109,12 @@ export default async function ClinicBookingsPage({
         )
       )
       .orderBy(
-        column && column in bookings
+        column && ["id","type","date","time","firstName","lastName","email","phone","message","status","createdAt","updatedAt"].includes(column)
           ? order === "asc"
-            ? asc(bookings[column])
-            : desc(bookings[column])
+            ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              asc((bookings as any)[column])
+            : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              desc((bookings as any)[column])
           : desc(bookings.createdAt)
       )
 
@@ -167,7 +170,11 @@ export default async function ClinicBookingsPage({
         <DateRangePicker align="end" />
       </CardHeader>
       <CardContent>
-        <BookingsTableShell data={items} pageCount={pageCount} />
+        <BookingsTableShell
+          data={items}
+          pageCount={pageCount}
+          onStatusChange={updateBookingStatus}
+        />
       </CardContent>
     </Card>
   )

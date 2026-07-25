@@ -50,7 +50,7 @@ export default async function SignInPage(): Promise<JSX.Element> {
             <span>Don&apos;t have an account? </span>
             <Link
               aria-label="Sign up"
-              href="/rejestracja"
+              href="/register"
               className="font-bold tracking-wide text-primary underline-offset-4 transition-colors hover:underline"
             >
               Create an account
@@ -62,7 +62,7 @@ export default async function SignInPage(): Promise<JSX.Element> {
             <span>Forgot password? </span>
             <Link
               aria-label="Reset password"
-              href="/logowanie/haslo-reset"
+              href="/login/password-reset"
               className="text-sm font-normal text-primary underline-offset-4 transition-colors hover:underline"
             >
               Reset password

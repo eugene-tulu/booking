@@ -1,6 +1,5 @@
 import * as React from "react"
 import type * as LabelPrimitive from "@radix-ui/react-label"
-import { Slot } from "@radix-ui/react-slot"
 import {
   Controller,
   FormProvider,
@@ -103,23 +102,25 @@ const FormLabel = React.forwardRef<
 FormLabel.displayName = "FormLabel"
 
 const FormControl = React.forwardRef<
-  React.ElementRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>
->(({ ...props }, ref) => {
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
   return (
-    <Slot
-      ref={ref}
-      id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
-      aria-invalid={!!error}
-      {...props}
-    />
+    <div ref={ref} className={cn(className)} {...props}>
+      {React.Children.map(props.children, (child) => {
+        if (!React.isValidElement(child)) return child
+        return React.cloneElement(child, {
+          id: formItemId,
+          "aria-describedby": !error
+            ? formDescriptionId
+            : `${formDescriptionId} ${formMessageId}`,
+          "aria-invalid": !!error,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any)
+      })}
+    </div>
   )
 })
 FormControl.displayName = "FormControl"

@@ -2,10 +2,9 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import router from "next/router"
 import { updateBusinessHours } from "@/actions/availability"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
 import { businessHours, type BusinessHours } from "@/db/schema"
 import {
@@ -14,7 +13,7 @@ import {
 } from "@/validations/availability"
 import { TIME_OPTIONS } from "@/data/constants"
 
-import { toast, useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -61,7 +60,7 @@ export function BusinessHoursUpdateForm({
   })
 
   function onSubmit(formData: UpdateBusinessHoursInput) {
-    React.startTransition(async () => {
+    startTransition(async () => {
       try {
         const message = await updateBusinessHours({
           ...formData,
@@ -70,23 +69,23 @@ export function BusinessHoursUpdateForm({
         switch (message) {
           case "success":
             toast({
-              title: "Godziny przyjęć zostały zaktualizowane",
+              title: "Business hours updated",
             })
             form.reset()
             router.refresh()
             break
           default:
             toast({
-              title: "Coś poszło nie tak",
-              description: "Godziny przyjęć nie zostały zaktualizowane",
+              title: "Something went wrong",
+              description: "Business hours were not updated",
               variant: "destructive",
             })
         }
       } catch (error) {
         console.error(error)
         toast({
-          title: "Coś poszło nie tak",
-          description: "Godziny przyjęć nie zostały zaktualizowane",
+          title: "Something went wrong",
+          description: "Business hours were not updated",
           variant: "destructive",
         })
       }
@@ -102,7 +101,7 @@ export function BusinessHoursUpdateForm({
         {/* Monday */}
         <div className="grid grid-cols-4 items-center justify-center gap-8">
           <div>
-            <h3 className="mt-8 font-bold">Poniedziałek</h3>
+            <h3 className="mt-8 font-bold">Monday</h3>
           </div>
 
           <FormField
@@ -227,7 +226,7 @@ export function BusinessHoursUpdateForm({
         {/* Tuesday */}
         <div className="grid grid-cols-4 items-center justify-center gap-8">
           <div>
-            <h3 className="mt-8 font-bold">Wtorek</h3>
+            <h3 className="mt-8 font-bold">Tuesday</h3>
           </div>
 
           <FormField
@@ -352,7 +351,7 @@ export function BusinessHoursUpdateForm({
         {/* Wednesday */}
         <div className="grid grid-cols-4 items-center justify-center gap-8">
           <div>
-            <h3 className="mt-8 font-bold">Środa</h3>
+            <h3 className="mt-8 font-bold">Wednesday</h3>
           </div>
 
           <FormField
@@ -477,7 +476,7 @@ export function BusinessHoursUpdateForm({
         {/* Thursday */}
         <div className="grid grid-cols-4 items-center justify-center gap-8">
           <div>
-            <h3 className="mt-8 font-bold">Czwartek</h3>
+            <h3 className="mt-8 font-bold">Thursday</h3>
           </div>
 
           <FormField
@@ -602,7 +601,7 @@ export function BusinessHoursUpdateForm({
         {/* Friday */}
         <div className="grid grid-cols-4 items-center justify-center gap-8">
           <div>
-            <h3 className="mt-8 font-bold">Piątek</h3>
+            <h3 className="mt-8 font-bold">Friday</h3>
           </div>
 
           <FormField
@@ -727,7 +726,7 @@ export function BusinessHoursUpdateForm({
         {/* Saturday */}
         <div className="grid grid-cols-4 items-center justify-center gap-8">
           <div>
-            <h3 className="mt-8 font-bold">Sobota</h3>
+            <h3 className="mt-8 font-bold">Saturday</h3>
           </div>
 
           <FormField
@@ -852,7 +851,7 @@ export function BusinessHoursUpdateForm({
         {/* Sunday */}
         <div className="grid grid-cols-4 items-center justify-center gap-8">
           <div>
-            <h3 className="mt-8 font-bold">Niedziela</h3>
+            <h3 className="mt-8 font-bold">Sunday</h3>
           </div>
 
           <FormField
@@ -981,8 +980,8 @@ export function BusinessHoursUpdateForm({
               aria-hidden="true"
             />
           )}
-          Aktualizuj
-          <span className="sr-only">Aktualizuj</span>
+            Update
+            <span className="sr-only">Update</span>
         </Button>
       </form>
     </Form>

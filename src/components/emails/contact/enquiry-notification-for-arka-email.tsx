@@ -11,19 +11,26 @@ interface EnquiryNotificationForArkaEmailProps {
 export function EnquiryNotificationForArkaEmail({
   firstName,
   lastName,
-}: EnquiryNotificationForArkaEmailProps): JSX.Element {
-  const previewText = `${firstName} ${lastName} przesyła zapytanie z formularza kontaktowego>`
-
+  email,
+  phone,
+  message,
+}: Readonly<EnquiryNotificationForArkaEmailProps>): JSX.Element {
+  const previewText = `${firstName} ${lastName} sent an enquiry from the contact form`
   return (
-    <Html lang="pl">
+    <Html lang="en">
       <Head>
-        <title>Zapytanie z formularza kontatowego</title>
+        <title>New contact form enquiry</title>
         <Preview>{previewText}</Preview>
       </Head>
       <Tailwind>
         <Body>
-          {/* TODO */}
-          Nowe zapytanie z formularza kontaktowego przeslane do przychodni ARKA
+          <p>New enquiry from the contact form on Brian Oduor Physiotherapy website.</p>
+          <ul>
+            <li>Name: {firstName} {lastName}</li>
+            <li>Email: {email}</li>
+            <li>Phone: {phone}</li>
+            {message && <li>Message: {message}</li>}
+          </ul>
         </Body>
       </Tailwind>
     </Html>

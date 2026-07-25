@@ -46,7 +46,7 @@ export function ResetPasswordEmail({
               </Text>
               <Button
                 href={absoluteUrl(
-                  `/logowanie/haslo-aktualizacja?token=${resetPasswordToken}`
+                  `/login/password-update?token=${resetPasswordToken}`
                 )}
               >
                 Set new password

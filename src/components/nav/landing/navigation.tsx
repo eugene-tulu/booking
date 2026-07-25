@@ -23,14 +23,15 @@ export function Navigation({ navItems }: NavigationProps): JSX.Element {
       <NavigationMenuList className="relative mr-[2.3vw] flex items-center justify-center gap-[2.3vw] lg:mr-[2.4vw] lg:gap-[2.4vw] 2xl:mr-[52px] 2xl:gap-[52px]">
         {navItems.map((item) => (
           <NavigationMenuItem key={item.title} asChild>
-            <Link href={item.href} legacyBehavior passHref>
+            <Link href={item.href}>
               <NavigationMenuLink
                 className={cn(
                   navigationMenuTriggerStyle(),
                   "relative bg-transparent px-0 hover:bg-transparent focus:bg-transparent",
                   "z-[2] inline-block cursor-pointer font-medium tracking-wide md:text-[1.9vw] lg:text-[1.7vw] xl:text-[18px]",
                   "after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-navbarHover after:opacity-70 after:transition-all after:ease-out after:content-['']",
-                  "hover:scale-[1.15] hover:after:origin-bottom-left hover:after:scale-x-100"
+                  "hover:scale-[1.15] hover:after:origin-bottom-left hover:after:scale-x-100",
+                  "motion-reduce:hover:scale-100 motion-reduce:hover:after:scale-x-0"
                 )}
               >
                 {item.title}

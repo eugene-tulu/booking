@@ -28,17 +28,20 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 interface BookingsTableShellProps {
   data: Booking[]
   pageCount: number
-  clinicId?: number
+  _clinicId?: number
+  onStatusChange?: (
+    input: { id: string; status: Booking["status"] }
+  ) => Promise<"invalid-input" | "not-found" | "error" | "success">
 }
 
 export function BookingsTableShell({
   data,
   pageCount,
-  clinicId,
+  _clinicId,
+  onStatusChange,
 }: BookingsTableShellProps): JSX.Element {
-  const toast = useToast()
+  const { toast } = useToast()
   const [isPending, startTransition] = React.useTransition()
-  const [selectedRowIds, setSelectedRowIds] = React.useState<string[]>([])
 
   const columns = React.useMemo<ColumnDef<Booking, unknown>[]>(
     () => [
@@ -49,11 +52,8 @@ export function BookingsTableShell({
             checked={table.getIsAllPageRowsSelected()}
             onCheckedChange={(value) => {
               table.toggleAllPageRowsSelected(!!value)
-              setSelectedRowIds((prev) =>
-                prev.length === data.length ? [] : data.map((row) => row.id)
-              )
             }}
-            aria-label="Zaznacz wszystko"
+            aria-label="Select all"
             className="translate-y-[2px]"
           />
         ),
@@ -62,13 +62,8 @@ export function BookingsTableShell({
             checked={row.getIsSelected()}
             onCheckedChange={(value) => {
               row.toggleSelected(!!value)
-              setSelectedRowIds((prev) =>
-                value
-                  ? [...prev, row.original.id]
-                  : prev.filter((id) => id !== row.original.id)
-              )
             }}
-            aria-label="Zaznacz wiersz"
+            aria-label="Select row"
             className="translate-y-[2px]"
           />
         ),
@@ -78,7 +73,7 @@ export function BookingsTableShell({
       {
         accessorKey: "type",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Typ" />
+          <DataTableColumnHeader column={column} title="Type" />
         ),
         cell: ({ cell }) => {
           const types = Object.values(bookings.type.enumValues)
@@ -112,27 +107,36 @@ export function BookingsTableShell({
         },
       },
       {
-        accessorKey: "slot",
+        id: "appointment",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Termin" />
+          <DataTableColumnHeader column={column} title="Appointment" />
         ),
+        cell: ({ row }) => {
+          const date = row.original.date
+          const time = row.original.time
+          return (
+            <span>
+              {formatDate(date)} {time}
+            </span>
+          )
+        },
       },
       {
         accessorKey: "firstName",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Imię" />
+          <DataTableColumnHeader column={column} title="First name" />
         ),
       },
       {
         accessorKey: "lastName",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Nazwisko" />
+          <DataTableColumnHeader column={column} title="Last name" />
         ),
       },
       {
         accessorKey: "phone",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Telefon" />
+          <DataTableColumnHeader column={column} title="Phone" />
         ),
       },
       {
@@ -144,13 +148,13 @@ export function BookingsTableShell({
       {
         accessorKey: "message",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Wiadomość" />
+          <DataTableColumnHeader column={column} title="Message" />
         ),
       },
       {
         accessorKey: "createdAt",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Data utworzenia" />
+          <DataTableColumnHeader column={column} title="Created" />
         ),
         cell: ({ cell }) => formatDate(cell.getValue() as Date),
         enableColumnFilter: false,
@@ -158,7 +162,7 @@ export function BookingsTableShell({
       {
         accessorKey: "updatedAt",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Data modyfikacji" />
+          <DataTableColumnHeader column={column} title="Updated" />
         ),
         cell: ({ cell }) => formatDate(cell.getValue() as Date),
         enableColumnFilter: false,
@@ -178,30 +182,67 @@ export function BookingsTableShell({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
               <DropdownMenuItem asChild>
-                <Link href={`/admin/przychodnia/rezerwacje/${row.original.id}`}>
+                <Link href={`/admin/clinic/bookings/${row.original.id}`}>
                   Edit
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={`/rezerwacja/${row.original.id}`}>View</Link>
+                <Link href={`/booking/${row.original.id}`}>View</Link>
               </DropdownMenuItem>
+              {onStatusChange && row.original.status === "unconfirmed" && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => {
+                      startTransition(async () => {
+                        const result = await onStatusChange({
+                          id: row.original.id,
+                          status: "confirmed",
+                        })
+                        if (result === "success") {
+                          toast({ title: "Booking confirmed" })
+                        } else {
+                          toast({
+                            title: "Could not update booking",
+                            variant: "destructive",
+                          })
+                        }
+                      })
+                    }}
+                  >
+                    Confirm
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      startTransition(async () => {
+                        const result = await onStatusChange({
+                          id: row.original.id,
+                          status: "cancelled",
+                        })
+                        if (result === "success") {
+                          toast({ title: "Booking cancelled" })
+                        } else {
+                          toast({
+                            title: "Could not update booking",
+                            variant: "destructive",
+                          })
+                        }
+                      })
+                    }}
+                  >
+                    Reject
+                  </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
-                  startTransition(() => {
+                  startTransition(async () => {
                     row.toggleSelected(false)
-
-                    // toast(
-                    //   deleteBookingAction({
-                    //     id: row.original.id,
-                    //     clinicId,
-                    //   }),
-                    //   {
-// loading: "Removing...",
-        // success: () => "Booking successfully removed",
-        // error: (err: unknown) => console.error(err),
-                    //   }
-                    // )
+                    await deleteBooking({ id: row.original.id })
+                    toast({
+                      title: "Booking deleted",
+                    })
                   })
                 }}
                 disabled={isPending}
@@ -214,32 +255,8 @@ export function BookingsTableShell({
         ),
       },
     ],
-    [data, isPending, clinicId]
+    [isPending, toast, onStatusChange]
   )
-
-  // function deleteSelectedRows() {
-  //   toast.promise(
-  //     Promise.all(
-  //       selectedRowIds.map((id) =>
-  //         deleteBookingAction({
-  //           id,
-  //           clinicId,
-  //         })
-  //       )
-  //     ),
-  //     {
-  //       loading: "Usuwanie...",
-  //       success: () => {
-  //         setSelectedRowIds([])
-  //         return "Wybrane rezerwacje pomyślnie usunięte"
-  //       },
-  //       error: (err: unknown) => {
-  //         setSelectedRowIds([])
-  //         return catchError(err)
-  //       },
-  //     }
-  //   )
-  // }
 
   return (
     <DataTable
@@ -249,21 +266,14 @@ export function BookingsTableShell({
       filterableColumns={[
         {
           id: "type",
-          title: "Typ",
+          title: "Type",
           options: bookings.type.enumValues.map((type) => ({
             label: `${type.charAt(0).toUpperCase()}${type.slice(1)}`,
             value: type,
           })),
         },
       ]}
-      // searchableColumns={[
-      //   {
-      //     id: "name",
-      //     title: "names",
-      //   },
-      // ]}
-      newRowLink={`/admin/rezerwacje/dodaj`}
-      // deleteRowsAction={() => void deleteSelectedRows()}
+      newRowLink={`/admin/bookings/add`}
     />
   )
 }

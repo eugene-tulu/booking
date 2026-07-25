@@ -65,6 +65,7 @@ export function BookingAddForm({
 
   const form = useForm<AddBookingInput>({
     resolver: zodResolver(addBookingSchema),
+    mode: "onChange",
     defaultValues: {
       type: "physiotherapy consultation",
       date: undefined,
@@ -74,7 +75,6 @@ export function BookingAddForm({
       email: "",
       phone: "",
       message: "",
-      status: "unconfirmed",
     },
   })
 
@@ -90,7 +90,6 @@ export function BookingAddForm({
           email: formData.email,
           phone: formData.phone,
           message: formData.message,
-          status: formData.status,
         })
 
         switch (message) {
@@ -194,6 +193,7 @@ export function BookingAddForm({
                           "w-full text-left font-normal",
                           !field.value && "text-muted-foreground"
                         )}
+                        aria-label="Select appointment date"
                       >
                         {field.value ? (
                           format(field.value, "PPP", { locale: enUS })
@@ -218,9 +218,12 @@ export function BookingAddForm({
                           ...datesUnavailable,
                         ],
                       }}
-                                         />
+                    />
                   </PopoverContent>
                 </Popover>
+                <UncontrolledFormMessage
+                  message={form.formState.errors.date?.message}
+                />
               </FormItem>
             )}
           />
@@ -246,7 +249,7 @@ export function BookingAddForm({
                           placeholder={field.value || "Select time"}
                         />
                       </SelectTrigger>
-                      <SelectContent className="h-[220pmax-h-[220px] overflow-y-scroll">
+                      <SelectContent className="h-[220px] overflow-y-scroll">
                         <SelectGroup>
                           {timeOptions &&
                             timeOptions.map((option) => (
@@ -334,6 +337,9 @@ export function BookingAddForm({
                 <FormControl>
                   <Input type="tel" placeholder="254726017063" {...field} />
                 </FormControl>
+                <UncontrolledFormMessage
+                  message={form.formState.errors.phone?.message}
+                />
               </FormItem>
             )}
           />
@@ -364,15 +370,7 @@ export function BookingAddForm({
         <div className="grid w-full grid-cols-2 gap-4">
           <Button
             type="submit"
-            disabled={
-              isPending ||
-              form.getValues("date") === undefined ||
-              form.getValues("time") === undefined ||
-              form.getValues("firstName") === "" ||
-              form.getValues("lastName") === "" ||
-              form.getValues("email") === "" ||
-              form.getValues("phone") === ""
-            }
+            disabled={isPending || !form.formState.isValid}
           >
             {isPending ? (
               <>

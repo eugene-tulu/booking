@@ -20,10 +20,6 @@ import {
   type MarkEmailAsVerifiedInput,
 } from "@/validations/email"
 
-import { EmailVerificationEmail } from "@/components/emails/auth/email-verification-email"
-import { EnquiryNotificationForArkaEmail } from "@/components/emails/contact/enquiry-notification-for-arka-email"
-import { EnquiryNotificationForCustomerEmail } from "@/components/emails/contact/enquiry-notification-for-customer-email"
-
 export async function resendEmailVerificationLink(
   rawInput: EmailVerificationFormInput
 ): Promise<"invalid-input" | "not-found" | "verified" | "error" | "success"> {
@@ -43,10 +39,14 @@ export async function resendEmailVerificationLink(
       .where(eq(users.email, validatedInput.data.email))
       .returning()
 
+    const { EmailVerificationEmail } = await import(
+      "@/components/emails/auth/email-verification-email"
+    )
+
     const emailSent = await resend.emails.send({
       from: process.env.RESEND_EMAIL_FROM,
       to: [validatedInput.data.email],
-      subject: "Zweryfikuj swój adres email",
+      subject: "Verify your email address",
       react: EmailVerificationEmail({
         email: validatedInput.data.email,
         emailVerificationToken,
@@ -57,7 +57,7 @@ export async function resendEmailVerificationLink(
   } catch (error) {
     console.error(error)
     throw new Error(
-      "Błąd przy wysyłaniu linka weryfikacyjnego. Wiadomość nie została wysłana"
+      "Error sending verification link. Email was not sent"
     )
   }
 }
@@ -74,7 +74,7 @@ export async function checkIfEmailVerified(
     return user?.emailVerified instanceof Date ? true : false
   } catch (error) {
     console.error(error)
-    throw new Error("Błąd przy sprawdzaniu czy email został już zweryfikowany")
+    throw new Error("Error checking if email is already verified")
   }
 }
 
@@ -107,11 +107,18 @@ export async function submitContactForm(
     const validatedInput = contactFormSchema.safeParse(rawInput)
     if (!validatedInput.success) return "invalid-input"
 
+    const { EnquiryNotificationForArkaEmail } = await import(
+      "@/components/emails/contact/enquiry-notification-for-arka-email"
+    )
+    const { EnquiryNotificationForCustomerEmail } = await import(
+      "@/components/emails/contact/enquiry-notification-for-customer-email"
+    )
+
     const emailToArkaSent = await resend.emails.send({
       from: process.env.RESEND_EMAIL_FROM,
       to: process.env.RESEND_EMAIL_TO,
       subject:
-        "Świetna wiadomość! Nowe zapytanie z formularza kontaktowego na stronie",
+        "New contact form enquiry on Brian Oduor Physiotherapy website",
       react: EnquiryNotificationForArkaEmail({
         firstName: validatedInput.data.firstName,
         lastName: validatedInput.data.lastName,
@@ -123,11 +130,10 @@ export async function submitContactForm(
 
     const emailToCustomerSent = await resend.emails.send({
       from: process.env.RESEND_EMAIL_FROM,
-      to: process.env.RESEND_EMAIL_TO,
-      subject: "Dziękujemy! Otrzymaliśmy Twoje zapytanie",
+      to: [validatedInput.data.email],
+      subject: "Thank you! We have received your enquiry",
       react: EnquiryNotificationForCustomerEmail({
         firstName: validatedInput.data.firstName,
-        lastName: validatedInput.data.lastName,
         email: validatedInput.data.email,
         phone: validatedInput.data.phone,
         message: validatedInput.data.message,
@@ -138,7 +144,7 @@ export async function submitContactForm(
   } catch (error) {
     console.error(error)
     throw new Error(
-      "Błąd przy przesyłaniu formularza kontaktowego. Formularz nie został wysłany"
+      "Error submitting contact form. Form was not sent"
     )
   }
 }

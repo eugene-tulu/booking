@@ -31,7 +31,7 @@ export default function ReverifyEmailPage(): JSX.Element {
           <EmailVerificationForm />
           <Link
             aria-label="Cancel email reverification"
-            href="/logowanie"
+            href="/login"
             className={buttonVariants({ variant: "outline" })}
           >
             <span className="sr-only">

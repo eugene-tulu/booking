@@ -20,9 +20,9 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         landingPrimary:
-          "border-[3px] border-primaryButtonBorder bg-greenButtonBackground py-[4.5vw] text-[4vw] font-medium tracking-wider text-greenButtonText md:px-[4vw] md:py-[1.3vw] md:text-[1.4vw] md:hover:scale-110 w-1400:px-[56px] w-1400:py-[18px] w-1400:text-[18px]",
+          "border-[3px] border-primaryButtonBorder bg-greenButtonBackground py-[clamp(12px,4.5vw,18px)] text-[clamp(16px,4vw,18px)] font-medium tracking-wider text-greenButtonText md:px-[4vw] md:py-[1.3vw] md:text-[1.4vw] md:hover:scale-110 w-1400:px-[56px] w-1400:py-[18px] w-1400:text-[18px]",
         landingSecondary:
-          "gap-[16px] rounded-full border-2 border-secondaryButtonBorder bg-peach py-[4vw] text-[4vw] font-medium tracking-wider text-greenNavbarText md:px-[4vw] md:py-[1.32vw] md:text-[1.4vw] md:hover:scale-110 w-1400:px-[56px] w-1400:py-[18px] w-1400:text-[18px]",
+          "gap-[16px] rounded-full border-2 border-secondaryButtonBorder bg-peach py-[clamp(12px,4vw,18px)] text-[clamp(16px,4vw,18px)] font-medium tracking-wider text-greenNavbarText md:px-[4vw] md:py-[1.32vw] md:text-[1.4vw] md:hover:scale-110 w-1400:px-[56px] w-1400:py-[18px] w-1400:text-[18px]",
         landingAppointment:
           "relative z-[2] hidden cursor-pointer rounded-full border-[3px] border-appointmentButtonBorder bg-greenButtonBackground from-greenButtonBackground to-greenNavbarText px-[30px] py-[10px] text-lg font-medium tracking-wide text-offWhiteText shadow-sm hover:scale-110 active:shadow-none md:flex lg:text-base xl:text-[18px]",
         landingContact:
@@ -37,7 +37,7 @@ const buttonVariants = cva(
         action: "w-[70vw] rounded-full sm:w-[60vw] md:w-auto",
         datePicker: "h-10 px-3 py-2",
         contact:
-          "h-[16vw] w-[50vw] rounded-full border-2 px-6 py-[10px] text-[4.8vw] tracking-wider shadow-sm md:h-[6vw] md:w-[20vw] md:text-[2vw] lg:size-auto lg:text-[16px]",
+          "h-[clamp(48px,16vw,96px)] w-[clamp(200px,50vw,320px)] rounded-full border-2 px-6 py-[10px] text-[clamp(16px,4.8vw,20px)] tracking-wider shadow-sm md:h-[6vw] md:w-[20vw] md:text-[2vw] lg:size-auto lg:text-[16px]",
       },
     },
     defaultVariants: {

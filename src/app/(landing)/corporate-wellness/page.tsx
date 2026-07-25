@@ -1,9 +1,18 @@
+import { getClinic } from "@/actions/clinic"
+
+import { Footer } from "@/components/nav/landing/footer"
+import { SubPageHeader } from "@/components/nav/landing/sub-page-header"
+
 import { Shell } from "@/components/shells/shell"
 
-export default function CorporateWellnessPage(): JSX.Element {
+export default async function CorporateWellnessPage(): Promise<JSX.Element> {
+  const clinic = await getClinic()
+
   return (
-    <Shell>
-      <section className="mx-auto w-full max-w-[1440px] px-5 py-16 md:px-6 lg:px-7">
+    <main className="mx-auto h-auto w-full max-w-[2560px] overflow-x-hidden">
+      <SubPageHeader />
+      <Shell>
+        <section className="mx-auto w-full max-w-[1440px] px-5 py-16 md:px-6 lg:px-7">
         <h1 className="bg-gradient-to-br from-emeraldGradientFrom to-emeraldGradientTo bg-clip-text text-center font-[BalooTamma] font-bold text-transparent">
           <span className="text-[12vw] md:text-[6vw] lg:text-[4vw] 2xl:text-[48px]">
             Workplace Wellness & Ergonomics
@@ -38,7 +47,13 @@ export default function CorporateWellnessPage(): JSX.Element {
             Better workplace movement. Healthier employees. More productive organizations.
           </p>
         </div>
-      </section>
-    </Shell>
+        </section>
+      </Shell>
+      <Footer
+        address={clinic?.address || "Dahlia Wellness Centre, 8 School Lane, Westlands, Nairobi, Kenya"}
+        phone_1={clinic?.phone_1 || "+254 726 017 063"}
+        phone_2={clinic?.phone_2 || "+254 117 889 911"}
+      />
+    </main>
   )
 }

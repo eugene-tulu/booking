@@ -1,22 +1,19 @@
-import NextAuth from "next-auth"
-
-import authConfig from "@/config/auth"
 import {
   DEFAULT_SIGNIN_REDIRECT,
   DEFAULT_UNAUTHENTICATED_REDIRECT,
 } from "@/config/defaults"
 
-const { auth } = NextAuth(authConfig)
+import { auth } from "@/auth"
 
-export const authRoutes = ["/logowanie", "/rejestracja", "/error"]
+export const authRoutes = ["/login", "/register", "/error"]
 export const publicRoutes = [
   "/",
-  "/polityka-prywatnosci",
-  "/rezerwacja",
-  "/rejestracja/potwierdz-email",
-  "/rejestracja/potwierdz-email-ponownie",
-  "/logowanie/haslo-reset",
-  "/logowanie/haslo-aktualizacja",
+  "/privacy-policy",
+  "/booking",
+  "/register/confirm-email",
+  "/register/resend-email-confirmation",
+  "/login/password-reset",
+  "/login/password-update",
 ]
 
 export default auth((req) => {

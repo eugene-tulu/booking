@@ -3,7 +3,6 @@ import { relations, sql } from "drizzle-orm"
 import {
   date,
   integer,
-  jsonb,
   pgEnum,
   pgTable,
   primaryKey,

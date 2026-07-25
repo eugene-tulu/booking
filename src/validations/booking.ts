@@ -63,22 +63,23 @@ export const bookingSchema = z.object({
   message: z.string().optional(),
   // rodo: z
   //   .boolean({
-  //     required_error: "Zgoda na przetwarzanie danych jest wymagana",
-  //     invalid_type_error: "Nieprawidłowy typ danych",
+  //     required_error: "Consent is required",
+  //     invalid_type_error: "Invalid data type",
   //   })
   //   .default(false)
   //   .refine((value) => value === true, {
-  //     message: "Zgoda na przetwarzanie danych jest wymagana",
+  //     message: "Consent is required",
   //   }),
-  status: z
-    .enum(bookings.status.enumValues)
-    .default(bookings.status.enumValues[0]),
 })
 
 export const addBookingSchema = bookingSchema
 
 export const updateBookingSchema = bookingSchema.extend({
   id: bookingIdSchema,
+  status: z
+    .enum(bookings.status.enumValues)
+    .default(bookings.status.enumValues[0])
+    .optional(),
 })
 
 export const deleteBookingSchema = z.object({

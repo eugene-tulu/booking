@@ -28,7 +28,7 @@ export function Navigation({ items }: NavigationProps): JSX.Element {
             key={item.title}
             className="font-semibold hover:underline"
           >
-            <Link href={item.href} legacyBehavior passHref>
+            <Link href={item.href}>
               <NavigationMenuLink
                 href={item.href}
                 className={cn(navigationMenuTriggerStyle(), "bg-transparent")}

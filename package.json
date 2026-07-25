@@ -1,6 +1,6 @@
 {
-  "name": "arka-weterynaria-full-stack-appointment-booking-and-management-website",
-  "description": "Przychodnia wterynaryjna ARKA. Poza podstawowymi informacjami na  temat przychodnia oraz danymi kontaktowymi, z łatwością zarezerwujesz wizytę za pomocą intuicyjnego i prostego formularza.",
+  "name": "brian-oduor-physiotherapy-appointment-booking",
+  "description": "Brian Oduor Physiotherapy website with online appointment booking. Professional physiotherapy, rehabilitation and hydrotherapy services in Nairobi, Kenya.",
   "version": "0.1.0",
   "license": "MIT",
   "private": true,
@@ -80,7 +80,6 @@
     "date-fns": "^4.4.0",
     "dayjs": "^1.11.13",
     "drizzle-orm": "^0.33.0",
-    "eslint-plugin@8.4.1-alpha.4": "link:@typescript=eslint/eslint-plugin@8.4.1-alpha.4",
     "nanoid": "^6.0.0",
     "next": "14.2.7",
     "next-auth": "5.0.0-beta.18",

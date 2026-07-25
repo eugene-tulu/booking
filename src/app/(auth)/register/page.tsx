@@ -50,7 +50,7 @@ export default async function SignUpPage(): Promise<JSX.Element> {
               <span>Already have an account? </span>
               <Link
                 aria-label="Sign in"
-                href="/logowanie"
+                href="/login"
                 className="font-bold tracking-wide text-primary underline-offset-4 transition-all hover:underline"
               >
                 Sign In
@@ -62,7 +62,7 @@ export default async function SignUpPage(): Promise<JSX.Element> {
               <span>Lost verification link? </span>
               <Link
                 aria-label="Resend email verification link"
-                href="/rejestracja/potwierdz-email-ponownie"
+                href="/register/resend-email-confirmation"
                 className="text-sm font-normal text-primary underline-offset-4 transition-colors hover:underline"
               >
                 Resend

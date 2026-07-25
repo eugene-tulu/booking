@@ -13,24 +13,24 @@ export function ClinicTabs() {
 
   const tabs = [
     {
-      title: "Dane",
-      href: `/admin/przychodnia/`,
+      title: "Details",
+      href: `/admin/clinic/`,
       isActive: segment === null,
     },
     {
-      title: "Godziny przyjęć",
-      href: `/admin/przychodnia/godziny`,
-      isActive: segment === "godziny",
+      title: "Opening Hours",
+      href: `/admin/clinic/hours`,
+      isActive: segment === "hours",
     },
     {
-      title: "Dni wolne",
-      href: `/admin/przychodnia/dni-wolne`,
-      isActive: segment === "dni-wolne",
+      title: "Days Off",
+      href: `/admin/clinic/days-off`,
+      isActive: segment === "days-off",
     },
     {
       title: "Bookings",
-      href: `/admin/przychodnia/rezerwacje`,
-      isActive: segment === "rezerwacje",
+      href: `/admin/clinic/bookings`,
+      isActive: segment === "bookings",
     },
   ]
 

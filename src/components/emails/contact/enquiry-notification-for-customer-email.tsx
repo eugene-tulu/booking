@@ -1,8 +1,7 @@
-import { Body, Head, Html, Preview, Tailwind } from "@react-email/components"
+import { Body, Head, Html, Preview, Section, Tailwind, Text } from "@react-email/components"
 
 interface EnquiryNotificationForCustomerEmailProps {
   firstName: string
-  lastName: string
   email: string
   phone: string
   message?: string
@@ -10,20 +9,33 @@ interface EnquiryNotificationForCustomerEmailProps {
 
 export function EnquiryNotificationForCustomerEmail({
   firstName,
-  lastName,
-}: EnquiryNotificationForCustomerEmailProps): JSX.Element {
-  const previewText = `${firstName} ${lastName} przesyła zapytanie z formularza kontaktowego>`
-
+  email,
+  phone,
+  message,
+}: Readonly<EnquiryNotificationForCustomerEmailProps>): JSX.Element {
+  const previewText = `Thank you for contacting Brian Oduor Physiotherapy`
   return (
-    <Html lang="pl">
+    <Html lang="en">
       <Head>
-        <title>Zapytanie z formularza kontatowego</title>
+        <title>We received your enquiry</title>
         <Preview>{previewText}</Preview>
       </Head>
       <Tailwind>
         <Body>
-          {/* TODO */}
-          Nowe zapytanie z formularza kontaktowego przeslane do przychodni ARKA
+          <Section>
+            <Text className="text-xl">Hello {firstName},</Text>
+            <Text className="text-base">
+              Thank you for reaching out. We have received your enquiry and will get back to you shortly.
+            </Text>
+            <Text className="text-base">
+              For your records, here is what you submitted:
+            </Text>
+            <ul className="list-disc pl-6">
+              <li>Email: {email}</li>
+              <li>Phone: {phone}</li>
+              {message && <li>Message: {message}</li>}
+            </ul>
+          </Section>
         </Body>
       </Tailwind>
     </Html>

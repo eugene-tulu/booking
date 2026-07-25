@@ -79,8 +79,8 @@ switch (message) {
       }
       } catch (error) {
         toast({
-          title: "Coś poszło nie tak",
-          description: "Spróbuj ponownie",
+          title: "Something went wrong",
+          description: "Please try again",
           variant: "destructive",
         })
         console.error(error)

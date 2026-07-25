@@ -5,11 +5,13 @@
 @font-face {
   font-family: "Baloo";
   src: url("/fonts/baloo-regular.woff2");
+  font-display: swap;
 }
 
 @font-face {
   font-family: "BalooTamma";
   src: url("/fonts/baloo-tamma.woff2");
+  font-display: swap;
 }
 
 @layer base {
@@ -25,7 +27,7 @@
     --secondary: 150 30% 95%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 150 30% 95%;
-    --muted-foreground: 150 20% 40%;
+    --muted-foreground: 240 10% 25%;
     --accent: 150 30% 95%;
     --accent-foreground: 150 70% 25%;
     --destructive: 0 84.2% 60.2%;
@@ -57,8 +59,14 @@
     --contactButtonBorder: #d8f3dc;
     --contactButtonBackground: #d8f3dc;
     --offWhiteText: #f8fbfa;
-    --lightSectionText: #0a7a55;
+    --lightSectionText: #054d3a;
     --darkSectionText: #d8f3dc;
+
+    --greenButtonBackground: #0a7a55;
+    --greenButtonText: #ffffff;
+    --greenNavbarText: #054d3a;
+    --primaryButtonBorder: #a8c5a0;
+    --peach: #fff5f0;
 
     --radius: 0.5rem;
   }
@@ -71,11 +79,13 @@
   body {
     @apply bg-background text-foreground;
   }
+}
 
-  input[type="password"]::-ms-reveal,
-  input[type="password"]::-ms-clear,
-  input[type="password"]::-webkit-password-toggle-button {
-    display: none !important;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

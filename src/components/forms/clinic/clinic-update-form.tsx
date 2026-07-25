@@ -65,27 +65,27 @@ export function ClinicUpdateForm({
         switch (message) {
           case "not-found":
             toast({
-              title: "Nie znaleziono przychodni",
-              description: "Nie udało się znaleźć przychodni o podanym ID",
+              title: "Practice not found",
+              description: "Could not find practice with the provided ID",
               variant: "destructive",
             })
             break
           case "success":
-            toast({ title: "Dane przychodni zostały zaktualizowane" })
-            router.push("/admin/przychodnia")
+            toast({ title: "Practice details updated" })
+            router.push("/admin/clinic")
             break
           default:
             toast({
-              title: "Coś poszło nie tak",
-              description: "Nie udało się zaktualizować danych przychodni",
+              title: "Something went wrong",
+              description: "Could not update practice details",
               variant: "destructive",
             })
         }
       } catch (error) {
         console.error(error)
         toast({
-          title: "Coś poszło nie tak",
-          description: "Nie udało się zaktualizować danych przychodni",
+          title: "Something went wrong",
+          description: "Could not update practice details",
           variant: "destructive",
         })
       }
@@ -104,7 +104,7 @@ export function ClinicUpdateForm({
             name="phone_1"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Telefon stacjonarny</FormLabel>
+                <FormLabel>Phone</FormLabel>
                 <FormControl>
                   <Input type="tel" placeholder="14 61 164 99" {...field} />
                 </FormControl>
@@ -118,7 +118,7 @@ export function ClinicUpdateForm({
             name="phone_2"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Telefon komórkowy</FormLabel>
+                <FormLabel>Mobile phone</FormLabel>
                 <FormControl>
                   <Input type="tel" placeholder="501 014 554" {...field} />
                 </FormControl>
@@ -135,7 +135,7 @@ export function ClinicUpdateForm({
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="arka@gmail.com" {...field} />
+                <Input type="email" placeholder="info@brianoduorphysiotherapy.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -147,10 +147,10 @@ export function ClinicUpdateForm({
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Adres</FormLabel>
+              <FormLabel>Address</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Brodzińskiego 2, 32-700 Bochnia"
+                  placeholder="Dahlia Wellness Centre, Westlands, Nairobi"
                   {...field}
                 />
               </FormControl>
@@ -164,9 +164,9 @@ export function ClinicUpdateForm({
             name="latitude"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Szerokość geograficzna</FormLabel>
+                <FormLabel>Latitude</FormLabel>
                 <FormControl>
-                  <Input placeholder="49.963088528718764" {...field} />
+                  <Input placeholder="-1.2634" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -177,9 +177,9 @@ export function ClinicUpdateForm({
             name="longitude"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Długość geograficzna</FormLabel>
+                <FormLabel>Longitude</FormLabel>
                 <FormControl>
-                  <Input placeholder="20.419507255029654" {...field} />
+                  <Input placeholder="36.8089" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -194,8 +194,8 @@ export function ClinicUpdateForm({
               aria-hidden="true"
             />
           )}
-          Aktualizuj
-          <span className="sr-only">Aktualizuj</span>
+          Update
+          <span className="sr-only">Update</span>
         </Button>
       </form>
     </Form>

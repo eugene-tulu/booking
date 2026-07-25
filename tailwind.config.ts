@@ -86,6 +86,11 @@ module.exports = {
         offWhiteText: "var(--offWhiteText)",
         lightSectionText: "var(--lightSectionText)",
         darkSectionText: "var(--darkSectionText)",
+        greenButtonBackground: "var(--greenButtonBackground)",
+        greenButtonText: "var(--greenButtonText)",
+        greenNavbarText: "var(--greenNavbarText)",
+        primaryButtonBorder: "var(--primaryButtonBorder)",
+        peach: "var(--peach)",
       },
       borderRadius: {
         lg: "var(--radius)",

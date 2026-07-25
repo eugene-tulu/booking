@@ -46,7 +46,7 @@ export default async function PasswordUpdatePage({
             <CardContent>
               <Link
                 aria-label="Back to sign in page"
-                href="/logowanie"
+                href="/login"
                 className={cn(
                   buttonVariants({ variant: "secondary" }),
                   "w-full"
@@ -75,7 +75,7 @@ export default async function PasswordUpdatePage({
             />
             <Link
               aria-label="Cancel password update"
-              href="/logowanie"
+              href="/login"
               className={buttonVariants({ variant: "outline" })}
             >
               <span className="sr-only">Cancel password update</span>
@@ -99,7 +99,7 @@ export default async function PasswordUpdatePage({
         <CardContent>
           <Link
             aria-label="Back to sign in page"
-            href="/logowanie"
+            href="/login"
             className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
           >
             <Icons.arrowLeft className="mr-2 size-4" />

@@ -69,11 +69,28 @@ export function getTimeOptions(
             )
           }) || []
 
+      const minutesToTime = (time: string): number => {
+        const [hoursStr, minutesStr] = time.split(":")
+        const hours = Number(hoursStr)
+        const minutes = Number(minutesStr)
+        if (!Number.isFinite(hours) || !Number.isFinite(minutes)) {
+          return 0
+        }
+        return hours * 60 + minutes
+      }
+
+      const closingMinutes = minutesToTime(closingTime)
+
       const currentSlot = new Date(selectedDate)
       currentSlot.setHours(Number(openingTime.split(":")[0]))
       currentSlot.setMinutes(Number(openingTime.split(":")[1]))
+      currentSlot.setSeconds(0)
+      currentSlot.setMilliseconds(0)
 
-      while (currentSlot.getHours() < Number(closingTime.split(":")[0])) {
+      while (
+        currentSlot.getHours() * 60 + currentSlot.getMinutes() + timeInterval <=
+        closingMinutes
+      ) {
         const currentSlotString = `${String(currentSlot.getHours()).padStart(
           2,
           "0"

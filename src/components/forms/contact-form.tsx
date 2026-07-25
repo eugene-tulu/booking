@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import { contactFormSchema, type ContactFormInput } from "@/validations/email"
 
 import { useToast } from "@/hooks/use-toast"
+import { submitContactForm } from "@/actions/email"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -36,17 +37,32 @@ export function ContactForm(): JSX.Element {
     },
   })
 
-  // TODO: Implement the logic
   function onSubmit(formData: ContactFormInput) {
-    startTransition(() => {
+    startTransition(async () => {
       try {
-        console.log(formData)
+        const message = await submitContactForm(formData)
+        switch (message) {
+          case "success":
+            toast({
+              title: "Message sent",
+              description: "We will get back to you shortly.",
+            })
+            form.reset()
+            break
+          default:
+            toast({
+              title: "Something went wrong",
+              description: "Please try again later.",
+              variant: "destructive",
+            })
+        }
+      } catch (error) {
+        console.error(error)
         toast({
-          title: "Hello",
-          description: "We have received your message. Thank you!",
+          title: "Something went wrong",
+          description: "Please try again later.",
+          variant: "destructive",
         })
-      } catch (err) {
-        console.error(err)
       }
     })
   }
@@ -59,27 +75,27 @@ export function ContactForm(): JSX.Element {
       >
         <div className="flex flex-col gap-[6vw] md:grid md:grid-cols-2 md:gap-4">
           {/* Name */}
-<FormField
-          control={form.control}
-          name="firstName"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel className="text-[4.4vw] font-medium text-sageText md:text-sm">
-                Name
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="John"
-                  {...field}
-                  className="h-[8vw] min-h-[40px] bg-transparent text-input placeholder:text-input/70 md:h-10"
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel className="text-[clamp(16px,4.4vw,18px)] font-medium text-white/85 md:text-sm">
+                  First Name
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="John"
+                    {...field}
+                    className="h-[8vw] min-h-[40px] bg-transparent text-white/90 placeholder:text-white/50 md:h-10"
+                  />
+                </FormControl>
+                <UncontrolledFormMessage
+                  message={form.formState.errors.firstName?.message}
                 />
-              </FormControl>
-              <UncontrolledFormMessage
-                message={form.formState.errors.firstName?.message}
-              />
-            </FormItem>
-          )}
-        />
+              </FormItem>
+            )}
+          />
 
           {/* Last Name */}
           <FormField
@@ -87,14 +103,14 @@ export function ContactForm(): JSX.Element {
             name="lastName"
             render={({ field }) => (
               <FormItem className="w-full">
-<FormLabel className="text-[4.4vw] font-medium text-sageText md:text-sm">
-                   Last Name
-                 </FormLabel>
+                <FormLabel className="text-[clamp(16px,4.4vw,18px)] font-medium text-white/85 md:text-sm">
+                  Last Name
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Doe"
                     {...field}
-                    className="h-[8vw] min-h-[40px] bg-transparent text-input placeholder:text-input/70 md:h-10"
+                    className="h-[8vw] min-h-[40px] bg-transparent text-white/90 placeholder:text-white/50 md:h-10"
                   />
                 </FormControl>
                 <UncontrolledFormMessage
@@ -112,14 +128,14 @@ export function ContactForm(): JSX.Element {
             name="phone"
             render={({ field }) => (
               <FormItem className="w-full">
-<FormLabel className="text-[4.4vw] font-medium text-sageText md:text-sm">
-                   Phone
-                 </FormLabel>
+                <FormLabel className="text-[clamp(16px,4.4vw,18px)] font-medium text-white/85 md:text-sm">
+                  Phone
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="+254 726 017 063"
                     {...field}
-                    className="h-[8vw] min-h-[40px] bg-transparent text-input placeholder:text-input/70 md:h-10"
+                    className="h-[8vw] min-h-[40px] bg-transparent text-white/90 placeholder:text-white/50 md:h-10"
                   />
                 </FormControl>
                 <UncontrolledFormMessage
@@ -135,14 +151,14 @@ export function ContactForm(): JSX.Element {
             name="email"
             render={({ field }) => (
               <FormItem className="w-full">
-<FormLabel className="text-[4.4vw] font-medium text-sageText md:text-sm">
-                   Email
-                 </FormLabel>
+                <FormLabel className="text-[clamp(16px,4.4vw,18px)] font-medium text-white/85 md:text-sm">
+                  Email
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="john@example.com"
                     {...field}
-                    className="h-[8vw] min-h-[40px] bg-transparent text-input placeholder:text-input/70 md:h-10"
+                    className="h-[8vw] min-h-[40px] bg-transparent text-white/90 placeholder:text-white/50 md:h-10"
                   />
                 </FormControl>
                 <UncontrolledFormMessage
@@ -159,22 +175,22 @@ export function ContactForm(): JSX.Element {
           name="message"
           render={({ field }) => (
             <FormItem className="w-full">
-<FormLabel className="text-[4.4vw] font-medium text-sageText md:text-sm">
-                 Message
-               </FormLabel>
+              <FormLabel className="text-[clamp(16px,4.4vw,18px)] font-medium text-white/85 md:text-sm">
+                Message
+              </FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Message (optional)"
                   {...field}
-                  className="h-[60vw] resize-none rounded-md bg-transparent text-muted placeholder:text-input md:h-[160px] w-1400:h-[224px]"
+                  className="h-[180px] resize-none rounded-md bg-transparent text-white/90 placeholder:text-white/50 md:h-[160px] w-1400:h-[224px]"
                 />
               </FormControl>
-<UncontrolledFormMessage
-                 message={form.formState.errors.message?.message}
-               />
-             </FormItem>
-           )}
-         />
+              <UncontrolledFormMessage
+                message={form.formState.errors.message?.message}
+              />
+            </FormItem>
+          )}
+        />
 
         {/* Button */}
         <div className="flex w-full items-center justify-center pt-[4vw] md:justify-end md:pt-[2vw]">

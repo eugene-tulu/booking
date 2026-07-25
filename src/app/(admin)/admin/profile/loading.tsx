@@ -10,9 +10,9 @@ export default function ProfileLoading(): JSX.Element {
   return (
     <Shell variant="sidebar">
       <PageHeader>
-        <PageHeaderHeading size="sm">Profil</PageHeaderHeading>
+        <PageHeaderHeading size="sm">Profile</PageHeaderHeading>
         <PageHeaderDescription size="sm">
-          Zarządzanie danymi administratora
+          Manage administrator account details
         </PageHeaderDescription>
       </PageHeader>
       <section className="grid gap-10 rounded-lg border p-4">

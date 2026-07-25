@@ -2,8 +2,7 @@ import { type AdminNavItem, type NavItem } from "@/types"
 
 const links = {
   facebook: "",
-  github:
-    "https://github.com/pjborowiecki/ARKA-Veterinary-Clinic-Page-and-Appointment-Booking-System.git",
+  github: "",
   openGraphImage: "https://brianoduorphysiotherapy.com/opengraph-image.png",
   manifestFile: "https://brianoduorphysiotherapy.com/site.webmanifest",
   authorsWebsite: "https://pjborowiecki.com",

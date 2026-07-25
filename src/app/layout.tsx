@@ -17,8 +17,6 @@ import { TailwindIndicator } from "@/components/tailwind-indicator"
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  minimumScale: 1,
-  maximumScale: 1,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
@@ -35,11 +33,11 @@ export const metadata: Metadata = {
   keywords: siteConfig.keywords,
   authors: [
     {
-      name: "Piotr Borowiecki",
-      url: "https://pjborowiecki.com",
+      name: "Oduor Brian Wamanya",
+      url: "https://brianoduorphysiotherapy.com",
     },
   ],
-  creator: "@pjborowiecki",
+  creator: siteConfig.author,
   robots: {
     index: true,
     follow: true,
@@ -93,8 +91,6 @@ export default function RootLayout({
             <TailwindIndicator />
           </ThemeProvider>
         </SmoothScrollProvider>
-
-        <Toaster />
       </body>
     </html>
   )

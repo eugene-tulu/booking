@@ -24,7 +24,7 @@ import { Shell } from "@/components/shells/shell"
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: "Availability",
-  description: "Set days and hours for appointments",
+  description: "Set days and hours for physiotherapy sessions",
 }
 
 export default async function AvailabilityPage(): Promise<JSX.Element> {

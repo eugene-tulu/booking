@@ -3,18 +3,6 @@ import { eq, sql } from "drizzle-orm"
 import { db } from "@/config/db"
 import { bookings } from "@/db/schema"
 
-export const psGetAllDoctorBookings = db
-  .select()
-  .from(bookings)
-  .where(eq(bookings.type, "physiotherapy consultation"))
-  .prepare("psGetAllDoctorBookings")
-
-export const psGetAllGroomerBookings = db
-  .select()
-  .from(bookings)
-  .where(eq(bookings.type, "home physiotherapy"))
-  .prepare("psGetAllGroomerBookings")
-
 export const psGetAllBookings = db
   .select()
   .from(bookings)
