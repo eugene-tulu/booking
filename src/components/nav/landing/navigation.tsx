@@ -23,7 +23,7 @@ export function Navigation({ navItems }: NavigationProps): JSX.Element {
       <NavigationMenuList className="relative mr-[2.3vw] flex items-center justify-center gap-[2.3vw] lg:mr-[2.4vw] lg:gap-[2.4vw] 2xl:mr-[52px] 2xl:gap-[52px]">
         {navItems.map((item) => (
           <NavigationMenuItem key={item.title} asChild>
-            <Link href={item.href}>
+            <Link href={item.href} legacyBehavior passHref>
               <NavigationMenuLink
                 className={cn(
                   navigationMenuTriggerStyle(),

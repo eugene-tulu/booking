@@ -4,7 +4,7 @@ import * as React from "react"
 import type { Metadata, Viewport } from "next"
 import { Analytics } from "@vercel/analytics/react"
 
-import { fontInter, fontJetBrainsMono } from "@/config/fonts"
+import { fontSans, fontJetBrainsMono } from "@/config/fonts"
 import { siteConfig } from "@/config/site"
 
 import { SmoothScrollProvider } from "@/providers/smooth-scroll-provider"
@@ -74,7 +74,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          fontInter.variable,
+          fontSans.variable,
           fontJetBrainsMono.variable
         )}
       >

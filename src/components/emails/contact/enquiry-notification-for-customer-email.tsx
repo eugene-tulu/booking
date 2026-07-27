@@ -13,7 +13,7 @@ export function EnquiryNotificationForCustomerEmail({
   phone,
   message,
 }: Readonly<EnquiryNotificationForCustomerEmailProps>): JSX.Element {
-  const previewText = `Thank you for contacting Brian Oduor Physiotherapy`
+  const previewText = `Thank you for contacting ARKA Veterinary Clinic`
   return (
     <Html lang="en">
       <Head>

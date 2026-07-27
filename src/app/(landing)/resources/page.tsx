@@ -1,67 +1,102 @@
-import { getClinic } from "@/actions/clinic"
+"use client"
 
-import { Footer } from "@/components/nav/landing/footer"
-import { SubPageHeader } from "@/components/nav/landing/sub-page-header"
+import React from "react"
+import { SectionReveal } from "@/components/SectionReveal"
+import { Calendar, ArrowRight } from "lucide-react"
 
-import { Shell } from "@/components/shells/shell"
+const blogs = [
+  {
+    title: "Understanding Back Pain: Causes and Prevention",
+    excerpt: "Back pain is one of the most common conditions seen in physiotherapy practice. Understanding its causes...",
+    category: "Pain Management",
+  },
+  {
+    title: "Post-Surgery Rehabilitation: What to Expect",
+    excerpt: "Rehabilitation after surgery is a critical phase of recovery. Knowing what to expect...",
+    category: "Rehabilitation",
+  },
+  {
+    title: "Hydrotherapy: Benefits of Water-Based Exercise",
+    excerpt: "Water-based exercise offers unique benefits for rehabilitation. The properties of water...",
+    category: "Hydrotherapy",
+  },
+  {
+    title: "Ergonomics for the Modern Workplace",
+    excerpt: "Poor workstation setup is a leading contributor to musculoskeletal discomfort. Ergonomic assessment...",
+    category: "Corporate Wellness",
+  },
+  {
+    title: "Neurological Rehabilitation: A Guide for Patients",
+    excerpt: "Neurological conditions affecting movement can be challenging. Physiotherapy provides structured...",
+    category: "Neurology",
+  },
+  {
+    title: "Staying Active as You Age: Geriatric Physiotherapy",
+    excerpt: "Physical activity is essential at every stage of life. Geriatric physiotherapy...",
+    category: "Geriatrics",
+  },
+]
 
-export default async function ResourcesPage(): Promise<JSX.Element> {
-  const clinic = await getClinic()
-
+export default function Resources(): JSX.Element {
   return (
-    <main className="mx-auto h-auto w-full max-w-[2560px] overflow-x-hidden">
-      <SubPageHeader />
-      <Shell>
-        <section className="mx-auto w-full max-w-[1440px] px-5 py-16 md:px-6 lg:px-7">
-          <h1 className="bg-gradient-to-br from-emeraldGradientFrom to-emeraldGradientTo bg-clip-text text-center font-[BalooTamma] font-bold text-transparent">
-            <span className="text-[12vw] md:text-[6vw] lg:text-[4vw] 2xl:text-[48px]">
-              Resources & Blog
-            </span>
-          </h1>
+    <div className="flex flex-col pt-20 min-h-screen bg-muted">
+      <section className="bg-white py-16 border-b border-border">
+        <div className="container mx-auto px-4 md:px-6">
+          <SectionReveal>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
+              Resources & Insights
+            </h1>
+            <p className="text-xl text-muted-foreground">
+              Educational articles on physiotherapy, movement, and recovery.
+            </p>
+          </SectionReveal>
+        </div>
+      </section>
 
-          <p className="mt-8 text-center text-[5vw] leading-[150%] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[20px]">
-            Educational resources on physiotherapy, movement, wellness and rehabilitation.
-            Stay informed about best practices for maintaining your physical health.
-          </p>
-
-          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <article className="rounded-xl bg-softSage p-6">
-              <h2 className="mb-2 text-[5vw] font-bold md:text-[2.5vw] lg:text-[2vw] 2xl:text-[24px]">
-                Understanding Back Pain
-              </h2>
-              <p className="text-[4vw] leading-[150%] md:text-[1.8vw] lg:text-[1.4vw] 2xl:text-[18px]">
-                Learn about the common causes of back pain and effective physiotherapy
-                approaches for relief and recovery.
-              </p>
-            </article>
-
-            <article className="rounded-xl bg-softSage p-6">
-              <h2 className="mb-2 text-[5vw] font-bold md:text-[2.5vw] lg:text-[2vw] 2xl:text-[24px]">
-                Benefits of Hydrotherapy
-              </h2>
-              <p className="text-[4vw] leading-[150%] md:text-[1.8vw] lg:text-[1.4vw] 2xl:text-[18px]">
-                Discover how water-based rehabilitation can accelerate your recovery
-                while reducing stress on joints.
-              </p>
-            </article>
-
-            <article className="rounded-xl bg-softSage p-6">
-              <h2 className="mb-2 text-[5vw] font-bold md:text-[2.5vw] lg:text-[2vw] 2xl:text-[24px]">
-                Ergonomics in the Workplace
-              </h2>
-              <p className="text-[4vw] leading-[150%] md:text-[1.8vw] lg:text-[1.4vw] 2xl:text-[18px]">
-                Tips for maintaining proper posture and preventing injuries while
-                working.
-              </p>
-            </article>
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {blogs.map((blog, i) => (
+              <SectionReveal key={i} delay={i * 0.1}>
+                <article className="bg-white rounded-2xl border border-border overflow-hidden h-full flex flex-col hover:shadow-md transition-shadow">
+                  <div className="h-48 bg-accent/50 flex items-center justify-center p-6 text-center border-b border-border/50">
+                    <span className="text-primary font-bold text-lg opacity-50">Illustration Placeholder</span>
+                  </div>
+                  <div className="p-6 flex flex-col flex-1">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-1 rounded-md">
+                        {blog.category}
+                      </span>
+                      <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                        <Calendar size={12} /> Coming soon
+                      </span>
+                    </div>
+                    <h2 className="text-xl font-bold text-foreground mb-3 leading-snug">
+                      {blog.title}
+                    </h2>
+                    <p className="text-muted-foreground mb-6 flex-1 text-sm">
+                      {blog.excerpt}
+                    </p>
+                    <a
+                      href="#"
+                      onClick={(e) => e.preventDefault()}
+                      className="inline-flex items-center gap-2 text-sm font-bold text-primary group"
+                    >
+                      Read More <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
+                </article>
+              </SectionReveal>
+            ))}
           </div>
-        </section>
-      </Shell>
-      <Footer
-        address={clinic?.address || "Dahlia Wellness Centre, 8 School Lane, Westlands, Nairobi, Kenya"}
-        phone_1={clinic?.phone_1 || "+254 726 017 063"}
-        phone_2={clinic?.phone_2 || "+254 117 889 911"}
-      />
-    </main>
+
+          <SectionReveal delay={0.4} className="mt-16 text-center">
+            <div className="inline-block py-2 px-6 rounded-full bg-border text-muted-foreground text-sm font-medium">
+              More articles coming soon
+            </div>
+          </SectionReveal>
+        </div>
+      </section>
+    </div>
   )
 }

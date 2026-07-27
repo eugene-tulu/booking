@@ -1,59 +1,66 @@
-import { getClinic } from "@/actions/clinic"
+"use client"
 
-import { Footer } from "@/components/nav/landing/footer"
-import { SubPageHeader } from "@/components/nav/landing/sub-page-header"
+import React from "react"
+import { SectionReveal } from "@/components/SectionReveal"
+import Link from "next/link"
+import { Home as HomeIcon, CheckCircle2 } from "lucide-react"
 
-import { Shell } from "@/components/shells/shell"
-
-export default async function HomePhysiotherapyPage(): Promise<JSX.Element> {
-  const clinic = await getClinic()
-
+export default function HomePhysiotherapy(): JSX.Element {
   return (
-    <main className="mx-auto h-auto w-full max-w-[2560px] overflow-x-hidden">
-      <SubPageHeader />
-      <Shell>
-        <section className="mx-auto w-full max-w-[1440px] px-5 py-16 md:px-6 lg:px-7">
-          <h1 className="bg-gradient-to-br from-emeraldGradientFrom to-emeraldGradientTo bg-clip-text text-center font-[BalooTamma] font-bold text-transparent">
-            <span className="text-[12vw] md:text-[6vw] lg:text-[4vw] 2xl:text-[48px]">
+    <div className="flex flex-col pt-20">
+      <section className="bg-muted py-16 md:py-24 border-b border-border">
+        <div className="container mx-auto px-4 md:px-6">
+          <SectionReveal className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-border text-primary font-medium text-sm mb-6 shadow-sm">
+              <HomeIcon size={16} /> Care brought to you
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
               Physiotherapy at Home
-            </span>
-          </h1>
+            </h1>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              Some patients find it difficult or unsafe to travel to a clinic for treatment. Home physiotherapy allows treatment and rehabilitation to take place within your own environment.
+            </p>
+          </SectionReveal>
+        </div>
+      </section>
 
-          <p className="mt-8 text-center text-[5vw] leading-[150%] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[20px]">
-            Some patients find it difficult or unsafe to travel to a clinic for treatment.
-            Home physiotherapy allows treatment and rehabilitation to take place within
-            your own environment.
-          </p>
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-4xl mx-auto">
+            <SectionReveal>
+              <h2 className="text-3xl font-bold mb-8 text-center">Who is this suitable for?</h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                {[
+                  { title: "Bedridden patients", desc: "Gentle mobilization to prevent stiffness and complications." },
+                  { title: "Elderly patients", desc: "Fall prevention, strength training, and mobility support." },
+                  { title: "Post-surgical recovery", desc: "Early rehabilitation when travel is medically unadvised." },
+                  { title: "Mobility limitations", desc: "For those who use mobility aids or have transport challenges." },
+                  { title: "Long-term rehabilitation", desc: "Ongoing care for chronic or neurological conditions." },
+                  { title: "Movement and function assistance", desc: "Adapting to daily tasks in your actual living space." },
+                ].map((item, i) => (
+                  <div key={i} className="bg-muted p-6 rounded-2xl border border-border">
+                    <h3 className="font-bold text-xl mb-2 text-foreground flex items-center gap-2">
+                      <CheckCircle2 className="text-primary" size={20} />
+                      {item.title}
+                    </h3>
+                    <p className="text-muted-foreground pl-7">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </SectionReveal>
 
-          <div className="mt-12 rounded-xl bg-softSage p-6">
-            <h2 className="mb-4 text-[6vw] font-bold md:text-[3vw] lg:text-[2vw] 2xl:text-[24px]">
-              Suitable for:
-            </h2>
-            <ul className="ml-4 list-inside list-disc text-[4.5vw] md:text-[2vw] lg:text-[1.5vw] 2xl:text-[18px]">
-              <li>Bedridden patients</li>
-              <li>Elderly patients</li>
-              <li>Patients recovering from surgery</li>
-              <li>Patients with mobility limitations</li>
-              <li>Patients requiring long-term rehabilitation</li>
-              <li>Patients who require assistance with movement and function</li>
-            </ul>
+            <SectionReveal delay={0.2} className="mt-16 text-center bg-accent/30 p-10 rounded-3xl border border-primary/20">
+              <h2 className="text-2xl font-bold mb-4">Need physiotherapy at home?</h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                We bring the expertise, equipment, and care directly to your doorstep.
+              </p>
+              <Link href="/contact" className="inline-flex px-8 py-4 bg-primary text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                Book a Home Assessment Today
+              </Link>
+            </SectionReveal>
           </div>
-
-          <div className="mt-12 text-center">
-            <a
-              href="/booking"
-              className="inline-block rounded-full bg-emeraldPrimary px-8 py-3 text-[5vw] font-bold text-white transition-all hover:scale-105 md:text-[2vw] lg:text-[1.5vw] 2xl:text-[18px]"
-            >
-              Need physiotherapy at home? Book a home assessment today.
-            </a>
-          </div>
-        </section>
-      </Shell>
-      <Footer
-        address={clinic?.address || "Dahlia Wellness Centre, 8 School Lane, Westlands, Nairobi, Kenya"}
-        phone_1={clinic?.phone_1 || "+254 726 017 063"}
-        phone_2={clinic?.phone_2 || "+254 117 889 911"}
-      />
-    </main>
+        </div>
+      </section>
+    </div>
   )
 }

@@ -1,7 +1,8 @@
 export const services = [
   {
     title: "Musculoskeletal Physiotherapy",
-    description: "For conditions affecting the muscles, joints, bones and movement system.",
+    description: "For conditions affecting muscles, joints, bones and the movement system.",
+    icon: "activity" as const,
     bulletPoints: [
       "Back pain",
       "Neck pain",
@@ -16,7 +17,8 @@ export const services = [
   },
   {
     title: "Post-Operative Rehabilitation",
-    description: "Structured rehabilitation after procedures such as:",
+    description: "Structured rehabilitation after surgery to restore movement, strength, confidence and function.",
+    icon: "plaster" as const,
     bulletPoints: [
       "Orthopedic surgery",
       "Joint replacement",
@@ -28,7 +30,8 @@ export const services = [
   },
   {
     title: "Neurological Rehabilitation",
-    description: "Physiotherapy rehabilitation for individuals experiencing movement and functional challenges related to neurological conditions.",
+    description: "Specialized care for conditions affecting the nervous system, focusing on retraining movement patterns.",
+    icon: "activity" as const,
     bulletPoints: [
       "Balance",
       "Coordination",
@@ -40,16 +43,18 @@ export const services = [
   },
   {
     title: "Chest Physiotherapy",
-    description: "Supportive physiotherapy for individuals who may benefit from techniques aimed at improving breathing, chest expansion and secretion clearance.",
+    description: "Techniques for improving breathing, chest expansion and secretion clearance.",
+    icon: "info" as const,
     bulletPoints: [
-      "For selected respiratory conditions",
+      "Selected respiratory conditions",
       "Post-operative care",
-      "Patients with reduced mobility",
+      "Reduced mobility",
     ],
   },
   {
     title: "Geriatric Physiotherapy",
-    description: "Specialized physiotherapy for older adults focusing on:",
+    description: "Care focused on the unique movement and physical needs of older adults to maintain quality of life.",
+    icon: "user" as const,
     bulletPoints: [
       "Mobility",
       "Strength",
@@ -61,13 +66,38 @@ export const services = [
   },
   {
     title: "Home-Based Physiotherapy",
-    description: "Professional physiotherapy delivered in the comfort of your home.",
+    description: "Professional physiotherapy services delivered in the comfort of your own home.",
+    icon: "home" as const,
     bulletPoints: [
       "Bedridden patients",
       "Older adults",
       "Post-operative patients",
-      "Patients with limited mobility",
-      "Patients requiring ongoing rehabilitation",
+      "Limited mobility",
+      "Ongoing rehabilitation",
+    ],
+  },
+  {
+    title: "Hydrotherapy",
+    description: "Water-based therapy to reduce pain and improve movement with lower joint load.",
+    icon: "activity" as const,
+    bulletPoints: [
+      "Strengthening & conditioning",
+      "Pain management",
+      "Improved range of motion",
+      "Cardiovascular fitness",
+      "Neurological retraining",
+    ],
+  },
+  {
+    title: "Sports Injury Rehabilitation",
+    description: "Targeted recovery programs for athletes and active individuals returning to sport safely.",
+    icon: "activity" as const,
+    bulletPoints: [
+      "Ligament sprains",
+      "Muscle tears",
+      "Tendon injuries",
+      "Functional testing",
+      "Return-to-sport planning",
     ],
   },
 ]

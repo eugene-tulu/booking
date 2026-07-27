@@ -1,144 +1,90 @@
+import React from "react"
+import { Phone } from "lucide-react"
 import Link from "next/link"
-import { getBusinessHours } from "@/actions/availability"
-
-import { type BusinessHours } from "@/db/schema"
-import { DAY_MAPPINGS, DAYS_OF_WEEK } from "@/data/constants"
 
 interface FooterProps {
-  address: string
-  phone_1: string
-  phone_2: string
+  address?: string
+  phone_1?: string
+  phone_2?: string
 }
 
-export async function Footer({
+export function Footer({
   address,
   phone_1,
   phone_2,
-}: FooterProps): Promise<JSX.Element> {
-  const businessHours = await getBusinessHours()
-  const DAYS_OF_WEEK_REARRANGED = [...DAYS_OF_WEEK.slice(1), DAYS_OF_WEEK[0]]
+}: FooterProps = {}): JSX.Element {
+  const clinicAddress =
+    address || "Dahlia Wellness Centre, Clarence House, 8 School Lane, Westlands, Nairobi, Kenya"
+  const phone1 = phone_1 || "+254 726 017 063"
+  const phone2 = phone_2 || "+254 117 889 911"
 
   return (
-    <footer
-      className="w-full max-w-[2560px] bg-softSage bg-[url('/images/svg/team-section-background.svg')] bg-cover bg-center bg-no-repeat text-darkCharcoal"
-      id="footer"
-    >
-      <div className="w-full">
-        <img
-          src="/images/svg/footer-top-wave.svg"
-          className=""
-          alt=""
-          aria-hidden="true"
-        />
-      </div>
+    <footer className="bg-[#111827] text-white pt-16 pb-8 border-t border-[#1f2937]">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-12">
 
-      <div className="mx-auto mt-9 w-full max-w-[1440px] px-5 md:px-6 lg:px-7 xl:mt-6">
-        <div className="flex flex-col-reverse items-center gap-16 md:grid md:grid-cols-2 md:gap-6 xl:h-[560px]">
-          <div className="flex h-full flex-col items-center justify-center w-1400:px-[194px]">
-            <h2 className="mb-6 bg-gradient-to-br from-emeraldGradientFrom to-emeraldGradientTo bg-clip-text text-center font-[BalooTamma] font-bold leading-[1.05] xl:mb-[42px]">
-              <span className="whitespace-nowrap text-[clamp(64px,22vw,96px)] text-transparent md:text-[5.8vw] w-1400:text-[96px]">
-                Contact
-              </span>
-              <br />
-              <span className="text-[clamp(32px,9vw,40px)] text-transparent md:whitespace-nowrap md:text-[3.71vw] w-1400:text-[40px]">
-                Information
-              </span>
-            </h2>
+          <div className="flex flex-col gap-4">
+            <div>
+              <h3 className="text-xl font-bold text-white tracking-tight">Brian Oduor</h3>
+              <p className="text-emerald-400 font-medium">Physiotherapy</p>
+            </div>
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+              Restoring Movement. Rebuilding Strength. Enhancing Life.
+            </p>
+            <p className="text-gray-500 text-xs">
+              Physiotherapy | Rehabilitation | Hydrotherapy | Movement & Wellness
+            </p>
+          </div>
 
-            <div className="flex flex-col gap-4 px-[16%]">
-              <p className="text-center text-[clamp(16px,4.8vw,16px)] font-extrabold md:px-[16%] md:text-[1.8vw] w-1400:text-[16px]">
-                Brian Oduor Physiotherapy
+          <div className="flex flex-col gap-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400">Contact</h4>
+            <div className="flex flex-col gap-3 text-sm text-gray-300">
+              <p className="leading-relaxed">
+                <span className="block text-white mb-1">Clinic Location:</span>
+                {clinicAddress}
               </p>
-
-              <div className="text-center text-[clamp(16px,4.8vw,18px)] md:text-[1.7vw] w-1400:text-[18px]">
-                <p>Oduor Brian Wamanya, BSc. Physiotherapy</p>
-                <p>Physiotherapy | Rehabilitation | Hydrotherapy | Movement & Wellness</p>
-              </div>
-
-              <div className="text-center text-[clamp(16px,4.8vw,18px)] md:text-[1.7vw] w-1400:text-[18px]">
-                <p>📍 {address}</p>
-                <p>Currently serving patients at Dahlia Wellness Centre, Westlands, Nairobi</p>
-              </div>
-
-              <div className="mt-2 flex flex-col items-center justify-center gap-1 text-center text-[clamp(16px,4.8vw,18px)] font-extrabold md:text-[1.7vw] w-1400:text-[18px]">
-                <p>📞 {phone_1}</p>
-                <p>📞 {phone_2}</p>
+              <div className="flex flex-col gap-1 mt-2">
+                <a href={`tel:${phone1.replace(/\D/g, "")}`} className="hover:text-emerald-400 transition-colors flex items-center gap-2">
+                  <Phone size={14} /> {phone1}
+                </a>
+                <a href={`tel:${phone2.replace(/\D/g, "")}`} className="hover:text-emerald-400 transition-colors flex items-center gap-2">
+                  <Phone size={14} /> {phone2}
+                </a>
               </div>
             </div>
           </div>
 
-          <div className="flex size-full flex-col items-center justify-center px-[10%] md:mt-[-38px] md:px-[16%] w-1400:px-[194px]">
-            <h2 className="mb-6 bg-gradient-to-br from-emeraldGradientFrom to-emeraldGradientTo bg-clip-text text-center font-[BalooTamma] font-bold leading-[1.05] xl:mb-[42px]">
-              <span className="whitespace-nowrap text-[clamp(48px,16vw,80px)] text-transparent md:text-[5.8vw] w-1400:text-[80px]">
-                Opening
-              </span>
-              <br />
-              <span className="text-[clamp(40px,14.6vw,72px)] text-transparent md:whitespace-nowrap md:text-[3.71vw] w-1400:text-[72px]">
-                Hours
-              </span>
-            </h2>
-
-            <div className="grid w-full grid-cols-2 justify-between text-[clamp(16px,4.8vw,18px)] md:text-[1.7vw] w-1400:text-[18px]">
-              <div className="flex flex-col gap-2 font-extrabold">
-                {DAYS_OF_WEEK_REARRANGED.map((day) => (
-                  <span key={day}>
-                    {(DAY_MAPPINGS as { [key: string]: string })[day as string]}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex flex-col items-end gap-2">
-                {DAYS_OF_WEEK_REARRANGED.map((day) => (
-                  <div key={day}>
-                    {businessHours?.[`${day}Status` as keyof BusinessHours] ===
-                    "open" ? (
-                      <div>
-                        {businessHours?.[
-                          `${day}Opening` as keyof BusinessHours
-                        ]?.toString()}{" "}
-                        -{" "}
-                        {businessHours?.[
-                          `${day}Closing` as keyof BusinessHours
-                        ]?.toString()}
-                      </div>
-                    ) : (
-                      <div className="uppercase">closed</div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="flex flex-col gap-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400">Quick Links</h4>
+            <ul className="flex flex-col gap-2 text-sm text-gray-300">
+              <li><Link href="/about" className="hover:text-emerald-400 transition-colors">About Me</Link></li>
+              <li><Link href="/services" className="hover:text-emerald-400 transition-colors">Services</Link></li>
+              <li><Link href="/resources" className="hover:text-emerald-400 transition-colors">Resources & Insights</Link></li>
+              <li><Link href="/contact" className="hover:text-emerald-400 transition-colors">Contact</Link></li>
+            </ul>
           </div>
+
+          <div className="flex flex-col gap-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400">Specialties</h4>
+            <ul className="flex flex-col gap-2 text-sm text-gray-300">
+              <li><Link href="/hydrotherapy" className="hover:text-emerald-400 transition-colors">Hydrotherapy</Link></li>
+              <li><Link href="/home-physiotherapy" className="hover:text-emerald-400 transition-colors">Home Physiotherapy</Link></li>
+              <li><Link href="/corporate-wellness" className="hover:text-emerald-400 transition-colors">Corporate Wellness</Link></li>
+              <li><Link href="/services" className="hover:text-emerald-400 transition-colors">Musculoskeletal Rehab</Link></li>
+            </ul>
+          </div>
+
         </div>
 
-        <div className="flex flex-col items-center justify-center py-8">
-          <div className="w-full border-DEFAULT border-black bg-black opacity-20" />
-          <p className="pt-8 text-center text-[clamp(18px,4.8vw,20px)] md:pt-6 md:text-[1.7vw] w-1400:text-[18px]">
-            <Link
-              href="/hydrotherapy"
-              className="font-[BalooTamma] text-[clamp(20px,5.2vw,20px)] font-bold md:text-[2.1vw] w-1400:text-[20px]"
-            >
-              Hydrotherapy
-            </Link>{" | "}
-            <Link
-              href="/home-physiotherapy"
-              className="font-[BalooTamma] text-[clamp(20px,5.2vw,20px)] font-bold md:text-[2.1vw] w-1400:text-[20px]"
-            >
-              Home Physiotherapy
-            </Link>{" | "}
-            <Link
-              href="/corporate-wellness"
-              className="font-[BalooTamma] text-[clamp(20px,5.2vw,20px)] font-bold md:text-[2.1vw] w-1400:text-[20px]"
-            >
-              Corporate Wellness
-            </Link>{" | "}
-            <Link
-              href="/resources"
-              className="font-[BalooTamma] text-[clamp(20px,5.2vw,20px)] font-bold md:text-[2.1vw] w-1400:text-[20px]"
-            >
-              Resources
-            </Link>
+        <div className="pt-8 border-t border-[#1f2937] flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-gray-500 text-sm">
+            &copy; {new Date().getFullYear()} Brian Oduor Physiotherapy. All rights reserved.
           </p>
+          <div className="flex gap-4">
+            <a href="https://wa.me/254726017063" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors text-sm">
+              WhatsApp
+            </a>
+          </div>
         </div>
       </div>
     </footer>

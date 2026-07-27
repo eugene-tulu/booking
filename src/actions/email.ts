@@ -117,8 +117,8 @@ export async function submitContactForm(
     const emailToArkaSent = await resend.emails.send({
       from: process.env.RESEND_EMAIL_FROM,
       to: process.env.RESEND_EMAIL_TO,
-      subject:
-        "New contact form enquiry on Brian Oduor Physiotherapy website",
+        subject:
+          "New contact form enquiry on ARKA Veterinary Clinic website",
       react: EnquiryNotificationForArkaEmail({
         firstName: validatedInput.data.firstName,
         lastName: validatedInput.data.lastName,

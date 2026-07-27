@@ -3,9 +3,9 @@ import { type AdminNavItem, type NavItem } from "@/types"
 const links = {
   facebook: "",
   github: "",
-  openGraphImage: "https://brianoduorphysiotherapy.com/opengraph-image.png",
-  manifestFile: "https://brianoduorphysiotherapy.com/site.webmanifest",
-  authorsWebsite: "https://pjborowiecki.com",
+  openGraphImage: "/opengraph-image.png",
+  manifestFile: "/site.webmanifest",
+  authorsWebsite: "",
 }
 
 export const siteConfig = {
@@ -33,11 +33,11 @@ export const siteConfig = {
     },
     {
       title: "About Me",
-      href: "/#about",
+      href: "/about",
     },
     {
       title: "Services",
-      href: "/#services",
+      href: "/services",
     },
     {
       title: "Hydrotherapy",
@@ -57,7 +57,7 @@ export const siteConfig = {
     },
     {
       title: "Contact",
-      href: "/#contact",
+      href: "/contact",
     },
   ] satisfies NavItem[],
 

@@ -24,6 +24,7 @@ module.exports = {
         full: "0 0 100%",
       },
       fontFamily: {
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         BalooTamma: ["BalooTamma", "sans-serif"],
         Baloo: ["Baloo", "cursive"],
       },
