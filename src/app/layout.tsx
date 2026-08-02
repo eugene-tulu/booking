@@ -2,7 +2,7 @@ import "@/styles/globals.css"
 
 import * as React from "react"
 import type { Metadata, Viewport } from "next"
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/next"
 
 import { fontSans, fontJetBrainsMono } from "@/config/fonts"
 import { siteConfig } from "@/config/site"
