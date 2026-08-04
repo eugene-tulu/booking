@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Menu, X, Phone } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 import { WhatsAppButton } from "@/components/WhatsAppButton"
 import { Footer } from "@/components/nav/landing/footer"
 
@@ -18,6 +19,27 @@ const navLinks = [
   { href: "/resources", label: "Resources" },
   { href: "/contact", label: "Contact" },
 ]
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "MedicalBusiness",
+  additionalType: "https://schema.org/Physiotherapy",
+  name: siteConfig.nameLong,
+  description: siteConfig.description,
+  url: siteConfig.url,
+  telephone: ["+254726017063", "+254117889911"],
+  medicalSpecialty: "Physiotherapy",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Dahlia Wellness Centre, Clarence House, 8 School Lane, Westlands",
+    addressLocality: "Nairobi",
+    addressCountry: "KE",
+  },
+  areaServed: "Nairobi, Kenya",
+  openingHours: ["Mo-Fr 08:00-17:00", "Sa 08:00-13:00"],
+  sameAs: [] as string[],
+}
+
 
 export default function LandingLayout({
   children,
@@ -43,6 +65,10 @@ export default function LandingLayout({
 
   return (
     <div className="min-h-[100dvh] flex flex-col font-sans text-foreground bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/80",

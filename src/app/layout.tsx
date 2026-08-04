@@ -57,9 +57,6 @@ export const metadata: Metadata = {
     images: [siteConfig.ogImage],
     creator: siteConfig.author,
   },
-  icons: {
-    icon: "/favicon.ico",
-  },
 }
 
 interface RootLayoutProps {

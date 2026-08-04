@@ -1,10 +1,11 @@
 "use server"
 
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
-import { desc, eq, like, or } from "drizzle-orm"
+import { and, desc, eq, like, not, or } from "drizzle-orm"
 import { z } from "zod"
 
 import { db } from "@/config/db"
+import { EMAIL_FROM, EMAIL_TO, resend } from "@/config/email"
 import {
   psCheckIfBookingExists,
   psDeleteBookingById,
@@ -46,12 +47,27 @@ export async function getAllBookings(): Promise<Booking[] | null> {
 
 export async function addBooking(
   rawInput: AddBookingInput
-): Promise<"invalid-input" | "error" | "success"> {
+): Promise<"invalid-input" | "slot-taken" | "error" | "success"> {
   try {
     const validatedInput = addBookingSchema.safeParse(rawInput)
     if (!validatedInput.success) return "invalid-input"
 
-    // TODO: ADD A CHECK FOR DATE AND TIME ALREADY TAKEN
+    // Guard against double-booking the same service, date and time
+    const slotTaken = await db
+      .select({ id: bookings.id })
+      .from(bookings)
+      .where(
+        and(
+          eq(bookings.type, validatedInput.data.type),
+          eq(bookings.date, validatedInput.data.date),
+          eq(bookings.time, validatedInput.data.time),
+          not(eq(bookings.status, "cancelled")),
+          not(eq(bookings.status, "rejected"))
+        )
+      )
+      .limit(1)
+
+    if (slotTaken.length > 0) return "slot-taken"
 
     const newBooking = await db
       .insert(bookings)
@@ -68,6 +84,53 @@ export async function addBooking(
         status: "unconfirmed",
       })
       .returning()
+
+    // Send notification emails (non-blocking on failure)
+    try {
+      const { BookingNotificationForArkaEmail } = await import(
+        "@/components/emails/booking/booking-notification-for-arka-email"
+      )
+      const { BookingNotificationForCustomerEmail } = await import(
+        "@/components/emails/booking/booking-notification-for-customer-email"
+      )
+
+      const dateString = validatedInput.data.date.toLocaleDateString("en-GB", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+
+      await resend.emails.send({
+        from: EMAIL_FROM,
+        to: EMAIL_TO,
+        subject: "New appointment request on Brian Oduor Physiotherapy website",
+        react: BookingNotificationForArkaEmail({
+          firstName: validatedInput.data.firstName,
+          lastName: validatedInput.data.lastName,
+          email: validatedInput.data.email,
+          phone: validatedInput.data.phone,
+          type: validatedInput.data.type,
+          date: dateString,
+          time: validatedInput.data.time,
+          message: validatedInput.data.message,
+        }),
+      })
+
+      await resend.emails.send({
+        from: EMAIL_FROM,
+        to: [validatedInput.data.email],
+        subject: "We received your appointment request",
+        react: BookingNotificationForCustomerEmail({
+          firstName: validatedInput.data.firstName,
+          type: validatedInput.data.type,
+          date: dateString,
+          time: validatedInput.data.time,
+        }),
+      })
+    } catch (emailError) {
+      console.error("Booking created but notification email failed", emailError)
+    }
 
     revalidatePath("/")
     revalidatePath(`/booking`)

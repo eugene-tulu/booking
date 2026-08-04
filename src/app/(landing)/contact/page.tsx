@@ -1,34 +1,71 @@
 "use client"
 
-import React from "react"
-import { SectionReveal } from "@/components/SectionReveal"
-import {
-  MapPin,
-  Phone,
-  Send,
-} from "lucide-react"
+import * as React from "react"
+import Link from "next/link"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { MapPin, Phone, Send } from "lucide-react"
 import { useForm } from "react-hook-form"
 
+import { contactFormSchema, type ContactFormInput } from "@/validations/email"
+
+import { submitContactForm } from "@/actions/email"
+import { useToast } from "@/hooks/use-toast"
+
+import { SectionReveal } from "@/components/SectionReveal"
+
 export default function Contact(): JSX.Element {
+  const { toast } = useToast()
+  const [isPending, startTransition] = React.useTransition()
+  const [isSuccess, setIsSuccess] = React.useState(false)
+
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, isSubmitSuccessful },
-  } = useForm()
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormInput>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      message: "",
+    },
+  })
 
-  const onSubmit = async (data: unknown) => {
-    try {
-      await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-    } catch (error) {
-      console.error(error)
-    }
+  const onSubmit = (data: ContactFormInput) => {
+    startTransition(async () => {
+      try {
+        const result = await submitContactForm(data)
+        switch (result) {
+          case "success":
+            setIsSuccess(true)
+            reset()
+            break
+          case "invalid-input":
+            toast({
+              title: "Please check your details",
+              description: "Some fields are missing or invalid.",
+              variant: "destructive",
+            })
+            break
+          default:
+            toast({
+              title: "Something went wrong",
+              description: "Please try again later.",
+              variant: "destructive",
+            })
+        }
+      } catch (error) {
+        console.error(error)
+        toast({
+          title: "Something went wrong",
+          description: "Please try again later.",
+          variant: "destructive",
+        })
+      }
+    })
   }
 
   return (
@@ -37,10 +74,15 @@ export default function Contact(): JSX.Element {
         <div className="container mx-auto px-4 md:px-6">
           <SectionReveal>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              Book an Appointment
+              Get in Touch
             </h1>
             <p className="text-xl text-primary-foreground/90 max-w-2xl">
-              Take the first step towards recovery. Reach out to schedule a consultation or home visit.
+              Have a question or want to learn more? Send us a message and we
+              will get back to you. Ready to schedule?{" "}
+              <Link href="/booking" className="underline font-semibold">
+                Book an appointment
+              </Link>
+              .
             </p>
           </SectionReveal>
         </div>
@@ -119,112 +161,100 @@ export default function Contact(): JSX.Element {
             <SectionReveal delay={0.2}>
               <div className="bg-white p-8 md:p-10 rounded-3xl border border-border shadow-lg relative">
                 <div className="absolute top-0 left-0 w-full h-2 bg-primary rounded-t-3xl"></div>
-                <h2 className="text-2xl font-bold mb-2">Request an Appointment</h2>
-                <p className="text-muted-foreground mb-8">Fill out the form below and we will contact you to confirm your booking.</p>
+                <h2 className="text-2xl font-bold mb-2">Send a Message</h2>
+                <p className="text-muted-foreground mb-8">Fill out the form below and we will get back to you.</p>
 
-                {isSubmitSuccessful ? (
+                {isSuccess ? (
                   <div className="bg-accent/50 border border-primary/20 rounded-xl p-8 text-center">
                     <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 text-primary shadow-sm">
                       <Send size={24} />
                     </div>
-                    <h3 className="text-xl font-bold text-primary mb-2">Request Sent!</h3>
-                    <p className="text-muted-foreground">Thank you for reaching out. We will get back to you within 24 hours to confirm your appointment details.</p>
+                    <h3 className="text-xl font-bold text-primary mb-2">Message Sent!</h3>
+                    <p className="text-muted-foreground">Thank you for reaching out. We will get back to you within 24 hours.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                    <div>
-                      <label className="block text-sm font-semibold text-foreground mb-2">Full Name *</label>
-                      <input
-                        {...register("name", { required: true })}
-                        type="text"
-                        className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/50"
-                        placeholder="John Doe"
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-sm font-semibold text-foreground mb-2">First Name *</label>
+                        <input
+                          {...register("firstName")}
+                          type="text"
+                          className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/50"
+                          placeholder="John"
+                        />
+                        {errors.firstName && (
+                          <p className="mt-1 text-xs text-destructive">{errors.firstName.message}</p>
+                        )}
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-foreground mb-2">Last Name *</label>
+                        <input
+                          {...register("lastName")}
+                          type="text"
+                          className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/50"
+                          placeholder="Doe"
+                        />
+                        {errors.lastName && (
+                          <p className="mt-1 text-xs text-destructive">{errors.lastName.message}</p>
+                        )}
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-sm font-semibold text-foreground mb-2">Phone Number *</label>
                         <input
-                          {...register("phone", { required: true })}
+                          {...register("phone")}
                           type="tel"
                           className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/50"
                           placeholder="+254 XXX XXX XXX"
                         />
+                        {errors.phone && (
+                          <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>
+                        )}
                       </div>
                       <div>
                         <label className="block text-sm font-semibold text-foreground mb-2">Email Address *</label>
                         <input
-                          {...register("email", { required: true })}
+                          {...register("email")}
                           type="email"
                           className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/50"
                           placeholder="john@example.com"
                         />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <div>
-                        <label className="block text-sm font-semibold text-foreground mb-2">Preferred Date</label>
-                        <input
-                          {...register("date")}
-                          type="date"
-                          className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/50"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-foreground mb-2">Preferred Time</label>
-                        <select
-                          {...register("time")}
-                          className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/50 appearance-none"
-                        >
-                          <option value="">Select a time...</option>
-                          <option value="Morning (8am - 12pm)">Morning (8am - 12pm)</option>
-                          <option value="Afternoon (12pm - 4pm)">Afternoon (12pm - 4pm)</option>
-                          <option value="Evening (4pm - 6pm)">Evening (4pm - 6pm)</option>
-                        </select>
+                        {errors.email && (
+                          <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
+                        )}
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-foreground mb-2">Service Required</label>
-                      <select
-                        {...register("service")}
-                        className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/50 appearance-none"
-                      >
-                        <option value="Physiotherapy consultation">Physiotherapy consultation</option>
-                        <option value="Home physiotherapy">Home physiotherapy</option>
-                        <option value="Hydrotherapy">Hydrotherapy</option>
-                        <option value="Post-operative rehabilitation">Post-operative rehabilitation</option>
-                        <option value="Back or neck pain">Back or neck pain</option>
-                        <option value="Sports injury rehabilitation">Sports injury rehabilitation</option>
-                        <option value="Neurological rehabilitation">Neurological rehabilitation</option>
-                        <option value="Geriatric physiotherapy">Geriatric physiotherapy</option>
-                        <option value="Corporate wellness">Corporate wellness</option>
-                        <option value="Other">Other</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-foreground mb-2">Additional Details</label>
+                      <label className="block text-sm font-semibold text-foreground mb-2">Message</label>
                       <textarea
                         {...register("message")}
-                        rows={4}
+                        rows={5}
                         className="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/50 resize-none"
-                        placeholder="Briefly describe what you would like help with."
+                        placeholder="How can we help you?"
                       ></textarea>
+                      {errors.message && (
+                        <p className="mt-1 text-xs text-destructive">{errors.message.message}</p>
+                      )}
                     </div>
 
                     <button
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={isPending}
                       className="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all disabled:opacity-70 disabled:hover:translate-y-0"
                     >
-                      {isSubmitting ? "Sending Request..." : "Request an Appointment"}
+                      {isPending ? "Sending..." : "Send Message"}
                     </button>
 
                     <p className="text-xs text-center text-muted-foreground mt-4">
-                      We&apos;ll get back to you within 24 hours to confirm your appointment.
+                      Looking to schedule?{" "}
+                      <Link href="/booking" className="font-semibold text-primary underline">
+                        Book an appointment
+                      </Link>{" "}
+                      instead.
                     </p>
                   </form>
                 )}
