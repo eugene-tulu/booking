@@ -76,86 +76,95 @@ export default async function ClinicBookingsPage({
   const fromDay = typeof from === "string" ? new Date(from) : undefined
   const toDay = typeof to === "string" ? new Date(to) : undefined
 
-  const { items, count } = await db.transaction(async (tx) => {
-    const items = await tx
-      .select()
-      .from(bookings)
-      .limit(limit)
-      .offset(offset)
-      .where(
-        and(
-          // eq(bookings.clinicId, clinic.id),
+  const itemsQuery = db
+    .select()
+    .from(bookings)
+    .limit(limit)
+    .offset(offset)
+    .where(
+      and(
+        // eq(bookings.clinicId, clinic.id),
 
-          // Filter by lat name
-          typeof lastName === "string"
-            ? like(bookings.lastName, `%${lastName}%`)
-            : undefined,
+        // Filter by lat name
+        typeof lastName === "string"
+          ? like(bookings.lastName, `%${lastName}%`)
+          : undefined,
 
-          // Filter by type
-          types.length > 0 ? inArray(bookings.type, types) : undefined,
+        // Filter by type
+        types.length > 0 ? inArray(bookings.type, types) : undefined,
 
-          // Filter by email
-          typeof email === "string"
-            ? like(bookings.email, `%${email}%`)
-            : undefined,
+        // Filter by email
+        typeof email === "string"
+          ? like(bookings.email, `%${email}%`)
+          : undefined,
 
-          // Filter by createdAt
-          fromDay && toDay
-            ? and(
-                gte(bookings.createdAt, fromDay),
-                lte(bookings.createdAt, toDay)
-              )
-            : undefined
-        )
+        // Filter by createdAt
+        fromDay && toDay
+          ? and(
+              gte(bookings.createdAt, fromDay),
+              lte(bookings.createdAt, toDay)
+            )
+          : undefined
       )
-      .orderBy(
-        column && ["id","type","date","time","firstName","lastName","email","phone","message","status","createdAt","updatedAt"].includes(column)
-          ? order === "asc"
-            ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              asc((bookings as any)[column])
-            : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              desc((bookings as any)[column])
-          : desc(bookings.createdAt)
+    )
+    .orderBy(
+      column &&
+        [
+          "id",
+          "type",
+          "date",
+          "time",
+          "firstName",
+          "lastName",
+          "email",
+          "phone",
+          "message",
+          "status",
+          "createdAt",
+          "updatedAt",
+        ].includes(column)
+        ? order === "asc"
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            asc((bookings as any)[column])
+          : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            desc((bookings as any)[column])
+        : desc(bookings.createdAt)
+    )
+
+  const countQuery = db
+    .select({
+      count: sql<number>`count(${bookings.id})`,
+    })
+    .from(bookings)
+    .where(
+      and(
+        // eq(bookings.clinicId, clinic.id),
+
+        // Filter by lastname
+        typeof lastName === "string"
+          ? like(bookings.lastName, `%${lastName}%`)
+          : undefined,
+
+        // Filter by type
+        types.length > 0 ? inArray(bookings.type, types) : undefined,
+
+        // Filter by email
+        typeof email === "string"
+          ? like(bookings.email, `%${email}%`)
+          : undefined,
+
+        // Filter by createdAt
+        fromDay && toDay
+          ? and(
+              gte(bookings.createdAt, fromDay),
+              lte(bookings.createdAt, toDay)
+            )
+          : undefined
       )
+    )
+    .then((res) => res[0]?.count ?? 0)
 
-    const count = await tx
-      .select({
-        count: sql<number>`count(${bookings.id})`,
-      })
-      .from(bookings)
-      .where(
-        and(
-          // eq(bookings.clinicId, clinic.id),
-
-          // Filter by lastname
-          typeof lastName === "string"
-            ? like(bookings.lastName, `%${lastName}%`)
-            : undefined,
-
-          // Filter by type
-          types.length > 0 ? inArray(bookings.type, types) : undefined,
-
-          // Filter by email
-          typeof email === "string"
-            ? like(bookings.email, `%${email}%`)
-            : undefined,
-
-          // Filter by createdAt
-          fromDay && toDay
-            ? and(
-                gte(bookings.createdAt, fromDay),
-                lte(bookings.createdAt, toDay)
-              )
-            : undefined
-        )
-      )
-      .then((res) => res[0]?.count ?? 0)
-
-    return {
-      items,
-      count,
-    }
-  })
+  const [items, count] = await Promise.all([itemsQuery, countQuery])
 
   const pageCount = Math.ceil(count / limit)
 
