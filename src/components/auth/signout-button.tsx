@@ -19,7 +19,7 @@ export function SignOutButton(): JSX.Element {
       }
     >
       <Icons.logout className="mr-2 size-4" aria-hidden="true" />
-      Wyloguj
+      Sign Out
     </Button>
   )
 }
