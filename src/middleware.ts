@@ -37,6 +37,12 @@ export default auth((req) => {
     )
   }
 
+  if (req.nextUrl.pathname.startsWith("/admin")) {
+    if (!authenticated || req.auth?.user?.role !== "administrator") {
+      return Response.redirect(new URL("/", req.nextUrl))
+    }
+  }
+
   return undefined
 })
 

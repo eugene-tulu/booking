@@ -1,12 +1,15 @@
 import { Header } from "@/components/nav/admin/header"
+import { requireAdmin } from "@/lib/auth-guard"
 
 interface AdminLayoutProps {
   children: React.ReactNode
 }
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
-}: Readonly<AdminLayoutProps>): JSX.Element {
+}: Readonly<AdminLayoutProps>): Promise<JSX.Element> {
+  await requireAdmin()
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
