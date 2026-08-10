@@ -48,12 +48,14 @@ interface BookingAddFormProps {
   existingBookings: Booking[] | null
   datesUnavailable: Date[]
   businessHours: BusinessHours | null
+  redirectTo?: string
 }
 
 export function BookingAddForm({
   existingBookings,
   datesUnavailable,
   businessHours,
+  redirectTo = "/",
 }: BookingAddFormProps): JSX.Element {
   const router = useRouter()
   const { toast } = useToast()
@@ -99,7 +101,7 @@ export function BookingAddForm({
               description:
                 "We will contact you shortly to confirm your appointment",
             })
-            router.push("/")
+            router.push(redirectTo)
             break
           case "slot-taken":
             toast({

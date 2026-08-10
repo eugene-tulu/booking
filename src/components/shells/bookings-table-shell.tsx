@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { deleteBooking } from "@/actions/booking"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type ColumnDef } from "@tanstack/react-table"
@@ -41,6 +42,7 @@ export function BookingsTableShell({
   onStatusChange,
 }: BookingsTableShellProps): JSX.Element {
   const { toast } = useToast()
+  const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
 
   const columns = React.useMemo<ColumnDef<Booking, unknown>[]>(
@@ -182,12 +184,10 @@ export function BookingsTableShell({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
               <DropdownMenuItem asChild>
-                <Link href={`/admin/clinic/bookings/${row.original.id}`}>
-                  Edit
-                </Link>
+                <Link href={`/admin/bookings/${row.original.id}`}>Edit</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={`/booking/${row.original.id}`}>View</Link>
+                <Link href={`/admin/bookings/${row.original.id}`}>View</Link>
               </DropdownMenuItem>
               {onStatusChange && row.original.status === "unconfirmed" && (
                 <>
@@ -201,6 +201,7 @@ export function BookingsTableShell({
                         })
                         if (result === "success") {
                           toast({ title: "Booking confirmed" })
+                          router.refresh()
                         } else {
                           toast({
                             title: "Could not update booking",
@@ -221,6 +222,7 @@ export function BookingsTableShell({
                         })
                         if (result === "success") {
                           toast({ title: "Booking cancelled" })
+                          router.refresh()
                         } else {
                           toast({
                             title: "Could not update booking",
@@ -243,6 +245,7 @@ export function BookingsTableShell({
                     toast({
                       title: "Booking deleted",
                     })
+                    router.refresh()
                   })
                 }}
                 disabled={isPending}
@@ -255,7 +258,7 @@ export function BookingsTableShell({
         ),
       },
     ],
-    [isPending, toast, onStatusChange]
+    [isPending, toast, onStatusChange, router]
   )
 
   return (

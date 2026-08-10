@@ -1,6 +1,8 @@
+import { Suspense } from "react"
 import { type Metadata } from "next"
 import { redirect } from "next/navigation"
 import { and, asc, desc, gte, inArray, like, lte, sql } from "drizzle-orm"
+import { endOfDay } from "date-fns"
 
 import { db } from "@/config/db"
 import { DEFAULT_UNAUTHENTICATED_REDIRECT } from "@/config/defaults"
@@ -75,6 +77,7 @@ export default async function ClinicBookingsPage({
 
   const fromDay = typeof from === "string" ? new Date(from) : undefined
   const toDay = typeof to === "string" ? new Date(to) : undefined
+  const toDayInclusive = toDay ? endOfDay(toDay) : undefined
 
   const itemsQuery = db
     .select()
@@ -98,13 +101,13 @@ export default async function ClinicBookingsPage({
           ? like(bookings.email, `%${email}%`)
           : undefined,
 
-        // Filter by createdAt
-        fromDay && toDay
-          ? and(
-              gte(bookings.createdAt, fromDay),
-              lte(bookings.createdAt, toDay)
-            )
-          : undefined
+            // Filter by createdAt
+            fromDay && toDayInclusive
+              ? and(
+                  gte(bookings.createdAt, fromDay),
+                  lte(bookings.createdAt, toDayInclusive)
+                )
+              : undefined
       )
     )
     .orderBy(
@@ -153,13 +156,13 @@ export default async function ClinicBookingsPage({
           ? like(bookings.email, `%${email}%`)
           : undefined,
 
-        // Filter by createdAt
-        fromDay && toDay
-          ? and(
-              gte(bookings.createdAt, fromDay),
-              lte(bookings.createdAt, toDay)
-            )
-          : undefined
+            // Filter by createdAt
+            fromDay && toDayInclusive
+              ? and(
+                  gte(bookings.createdAt, fromDay),
+                  lte(bookings.createdAt, toDayInclusive)
+                )
+              : undefined
       )
     )
     .then((res) => res[0]?.count ?? 0)
@@ -176,7 +179,9 @@ export default async function ClinicBookingsPage({
           <CardDescription>Manage bookings</CardDescription>
         </div>
 
-        <DateRangePicker align="end" />
+        <Suspense fallback={<div className="h-9 w-[300px]" />}>
+          <DateRangePicker align="end" />
+        </Suspense>
       </CardHeader>
       <CardContent>
         <BookingsTableShell
