@@ -4,6 +4,17 @@ import React from "react"
 import { SectionReveal } from "@/components/SectionReveal"
 import { Award, BookOpen, UserCircle2 } from "lucide-react"
 import Link from "next/link"
+import { ImageCarousel } from "@/components/image-carousel"
+
+const profileImages = [
+  { src: "/images/profile/IMG_0235.jpg", alt: "Oduor Brian Wamanya" },
+  { src: "/images/profile/IMG_0236.jpg", alt: "Oduor Brian Wamanya" },
+  { src: "/images/profile/IMG_0237.jpg", alt: "Oduor Brian Wamanya" },
+  { src: "/images/profile/IMG_0238.jpg", alt: "Oduor Brian Wamanya" },
+  { src: "/images/profile/IMG_0239.jpg", alt: "Oduor Brian Wamanya" },
+  { src: "/images/profile/IMG_0240.jpg", alt: "Oduor Brian Wamanya" },
+  { src: "/images/profile/IMG_0241.jpg", alt: "Oduor Brian Wamanya" },
+]
 
 export default function About(): JSX.Element {
   return (
@@ -29,11 +40,13 @@ export default function About(): JSX.Element {
 
             <div className="lg:col-span-4 flex flex-col gap-8">
               <SectionReveal>
-                <div className="w-full aspect-square max-w-sm mx-auto lg:mx-0 rounded-2xl bg-accent flex items-center justify-center border-4 border-white shadow-xl">
-                  <div className="w-48 h-48 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary border-dashed">
-                    <span className="text-4xl font-bold text-primary tracking-widest">OB</span>
-                  </div>
-                </div>
+                <ImageCarousel
+                  images={profileImages}
+                  aspectRatio={3 / 4}
+                  autoPlay
+                  interval={4000}
+                  className="w-full max-w-sm mx-auto lg:mx-0 rounded-2xl border-4 border-white shadow-xl"
+                />
               </SectionReveal>
 
               <SectionReveal delay={0.2}>
